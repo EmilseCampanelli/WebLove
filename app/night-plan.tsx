@@ -10,38 +10,48 @@ import { router, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Colors, Radius } from "../src/theme";
 import {
-  generateNightPlan,
+  generateExperience,
+  getGuidedExperienceActivities,
+  GUIDED_EXPERIENCES,
   NightConfig,
-  NightStep,
   PlaceOption,
   TimeOption,
   EnergyOption,
   BudgetOption,
-  GUIDED_NIGHTS,
-  GuidedNight,
-} from "../src/data/nightPlans";
+  GuidedExperience,
+} from "../src/data/generator";
+import { Activity } from "../src/data/activities";
+import { setSession } from "../src/stores/sessionStore";
 
-function StepCard({ step, index }: { step: NightStep; index: number }) {
+const TYPE_EMOJIS: Record<string, string> = {
+  question: "💬",
+  challenge: "🎯",
+  game: "🎮",
+  activity: "✨",
+  secret_mission: "🕵️",
+  timer: "⏱",
+  choice: "🎲",
+  no_phone: "📵",
+  date: "🌙",
+  surprise: "🎁",
+};
+
+function ActivityRow({ activity, index }: { activity: Activity; index: number }) {
+  const emoji = TYPE_EMOJIS[activity.type] ?? "✦";
   return (
-    <Pressable
-      style={({ pressed }) => [styles.stepCard, pressed && styles.stepCardPressed]}
-      onPress={() => router.push(step.route as Parameters<typeof router.push>[0])}
-      accessibilityRole="button"
-      accessibilityLabel={step.title}
-    >
-      <View style={styles.stepIndex}>
-        <Text style={styles.stepIndexText}>{index + 1}</Text>
+    <View style={styles.activityRow}>
+      <View style={styles.rowIndex}>
+        <Text style={styles.rowIndexText}>{index + 1}</Text>
       </View>
-      <View style={styles.stepEmoji}>
-        <Text style={styles.stepEmojiText}>{step.emoji}</Text>
+      <View style={[styles.rowEmoji, { backgroundColor: Colors.primary + "18" }]}>
+        <Text style={styles.rowEmojiText}>{emoji}</Text>
       </View>
-      <View style={styles.stepContent}>
-        <Text style={styles.stepTitle}>{step.title}</Text>
-        <Text style={styles.stepDesc}>{step.description}</Text>
+      <View style={styles.rowContent}>
+        <Text style={styles.rowTitle}>{activity.title}</Text>
+        <Text style={styles.rowDesc} numberOfLines={2}>{activity.description}</Text>
       </View>
-      <Text style={styles.stepDuration}>{step.durationMin} min</Text>
-      <Text style={styles.stepArrow}>›</Text>
-    </Pressable>
+      <Text style={styles.rowDuration}>{activity.durationMin} min</Text>
+    </View>
   );
 }
 
@@ -56,20 +66,21 @@ export default function NightPlanScreen() {
 
   let title: string;
   let tagline: string;
-  let steps: NightStep[];
+  let activities: Activity[];
 
   if (params.guidedId) {
-    const guided: GuidedNight | undefined = GUIDED_NIGHTS.find(
+    const guided: GuidedExperience | undefined = GUIDED_EXPERIENCES.find(
       (n) => n.id === params.guidedId
     );
-    if (!guided) {
-      title = "Noche sorpresa";
-      tagline = "Algo está por pasar.";
-      steps = GUIDED_NIGHTS[5].steps;
-    } else {
+    if (guided) {
       title = guided.title;
       tagline = guided.tagline;
-      steps = guided.steps;
+      activities = getGuidedExperienceActivities(guided);
+    } else {
+      const fallback = GUIDED_EXPERIENCES[5];
+      title = fallback.title;
+      tagline = fallback.tagline;
+      activities = getGuidedExperienceActivities(fallback);
     }
   } else {
     const config: NightConfig = {
@@ -78,13 +89,23 @@ export default function NightPlanScreen() {
       energy: (params.energy as EnergyOption) ?? "media",
       budget: (params.budget as BudgetOption) ?? "nada",
     };
-    const plan = generateNightPlan(config);
-    title = plan.title;
-    tagline = plan.tagline;
-    steps = plan.steps;
+    const generated = generateExperience(config);
+    title = generated.title;
+    tagline = generated.tagline;
+    activities = generated.activities;
   }
 
-  const totalMin = steps.reduce((sum, s) => sum + s.durationMin, 0);
+  const totalMin = activities.reduce((sum, a) => sum + a.durationMin, 0);
+
+  const handleStart = () => {
+    setSession({ title, tagline, activities });
+    router.push("/session");
+  };
+
+  const handleRegenerate = () => {
+    // Navigate back to configure to try again
+    router.back();
+  };
 
   return (
     <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
@@ -106,26 +127,42 @@ export default function NightPlanScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scroll}
       >
+        {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.tagline}>{tagline}</Text>
-          <Text style={styles.meta}>{steps.length} pasos · ~{totalMin} min</Text>
+          <Text style={styles.meta}>
+            {activities.length} actividades · ~{totalMin} min
+          </Text>
         </View>
 
-        <View style={styles.steps}>
-          {steps.map((step, i) => (
-            <StepCard key={`${step.id}-${i}`} step={step} index={i} />
+        {/* Activity list */}
+        <View style={styles.list}>
+          {activities.map((activity, i) => (
+            <ActivityRow key={activity.id} activity={activity} index={i} />
           ))}
         </View>
 
+        {/* Actions */}
         <Pressable
           style={({ pressed }) => [styles.startBtn, pressed && styles.startBtnPressed]}
-          onPress={() => router.push(steps[0].route as Parameters<typeof router.push>[0])}
+          onPress={handleStart}
           accessibilityRole="button"
-          accessibilityLabel="Empezar desde el principio"
+          accessibilityLabel="Empezar"
         >
-          <Text style={styles.startLabel}>EMPEZAR DESDE EL PRINCIPIO</Text>
+          <Text style={styles.startLabel}>EMPEZAR</Text>
         </Pressable>
+
+        {!params.guidedId && (
+          <Pressable
+            style={({ pressed }) => [styles.regenBtn, pressed && styles.regenBtnPressed]}
+            onPress={handleRegenerate}
+            accessibilityRole="button"
+            accessibilityLabel="Generar otro plan"
+          >
+            <Text style={styles.regenLabel}>🎲 GENERAR OTRO PLAN</Text>
+          </Pressable>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -171,7 +208,6 @@ const styles = StyleSheet.create({
   },
   header: {
     gap: 6,
-    marginBottom: 4,
   },
   title: {
     fontFamily: "InstrumentSerif_400Regular",
@@ -192,13 +228,13 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
     color: Colors.textTertiary,
   },
-  steps: {
+  list: {
     gap: 8,
   },
-  stepCard: {
+  activityRow: {
     backgroundColor: Colors.surface,
     borderRadius: Radius.lg,
-    paddingVertical: 14,
+    paddingVertical: 12,
     paddingHorizontal: 14,
     flexDirection: "row",
     alignItems: "center",
@@ -206,55 +242,48 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(235,226,213,0.07)",
   },
-  stepCardPressed: {
-    opacity: 0.75,
-    transform: [{ scale: 0.985 }],
-  },
-  stepIndex: {
-    width: 24,
+  rowIndex: {
+    width: 20,
     alignItems: "center",
   },
-  stepIndexText: {
+  rowIndexText: {
     fontFamily: "Manrope_700Bold",
-    fontSize: 12,
+    fontSize: 11,
     color: Colors.textTertiary,
   },
-  stepEmoji: {
+  rowEmoji: {
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "rgba(192,154,82,0.12)",
     alignItems: "center",
     justifyContent: "center",
+    flexShrink: 0,
   },
-  stepEmojiText: {
+  rowEmojiText: {
     fontSize: 20,
   },
-  stepContent: {
+  rowContent: {
     flex: 1,
     gap: 2,
   },
-  stepTitle: {
+  rowTitle: {
     fontFamily: "Manrope_600SemiBold",
     fontSize: 14,
     color: Colors.text,
+    lineHeight: 19,
   },
-  stepDesc: {
+  rowDesc: {
     fontFamily: "InstrumentSerif_400Regular",
-    fontSize: 13,
-    lineHeight: 18,
+    fontSize: 12,
+    lineHeight: 17,
     color: Colors.textSecondary,
     fontStyle: "italic",
   },
-  stepDuration: {
+  rowDuration: {
     fontFamily: "Manrope_400Regular",
     fontSize: 11,
     color: Colors.textTertiary,
     letterSpacing: 0.3,
-  },
-  stepArrow: {
-    fontSize: 20,
-    color: Colors.textTertiary,
   },
   startBtn: {
     backgroundColor: Colors.primary,
@@ -262,7 +291,6 @@ const styles = StyleSheet.create({
     height: 56,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 4,
   },
   startBtnPressed: {
     opacity: 0.85,
@@ -273,5 +301,22 @@ const styles = StyleSheet.create({
     fontSize: 13,
     letterSpacing: 2,
     color: Colors.background,
+  },
+  regenBtn: {
+    borderRadius: Radius.md,
+    height: 48,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(235,226,213,0.1)",
+  },
+  regenBtnPressed: {
+    opacity: 0.7,
+  },
+  regenLabel: {
+    fontFamily: "Manrope_700Bold",
+    fontSize: 12,
+    letterSpacing: 1.5,
+    color: Colors.textSecondary,
   },
 });

@@ -10,35 +10,58 @@ import {
 } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Colors, Typography, Radius } from "../src/theme";
-import { GUIDED_NIGHTS } from "../src/data/nightPlans";
+import { Colors, Radius } from "../src/theme";
+import {
+  GUIDED_EXPERIENCES,
+  generateQuickSession,
+} from "../src/data/generator";
+import { CategoryTag } from "../src/data/activities";
+import { setSession } from "../src/stores/sessionStore";
 
-type MoodButton = {
-  emoji: string;
-  label: string;
-  route: string;
-};
+// Mood buttons — first 6 go in a 2-column grid, last one is full-width
+type MoodButton =
+  | { kind: "question"; emoji: string; label: string; modeId: string }
+  | { kind: "session"; emoji: string; label: string; category: CategoryTag };
 
 const MOOD_BUTTONS: MoodButton[] = [
-  { emoji: "❤️", label: "Conexión", route: "/game?modeId=conexion" },
-  { emoji: "😉", label: "Coqueteo", route: "/game?modeId=coqueteo" },
-  { emoji: "🔥", label: "Íntimo", route: "/game?modeId=intimo" },
-  { emoji: "😄", label: "Reírnos", route: "/game?modeId=diversion" },
-  { emoji: "💭", label: "Profundo", route: "/game?modeId=profundo" },
-  { emoji: "🎯", label: "Desafíos", route: "/experience?category=challenge" },
-  { emoji: "🥂", label: "Previas", route: "/game?modeId=previas" },
+  { kind: "question", emoji: "💕", label: "CONECTAR", modeId: "conexion" },
+  { kind: "question", emoji: "😂", label: "REÍRNOS", modeId: "diversion" },
+  { kind: "question", emoji: "😏", label: "COQUETEAR", modeId: "coqueteo" },
+  { kind: "session", emoji: "🎮", label: "JUGAR", category: "juego" },
+  { kind: "question", emoji: "🌙", label: "RELAJARNOS", modeId: "profundo" },
+  { kind: "session", emoji: "🎲", label: "SORPRENDERNOS", category: "sorpresa" },
+  { kind: "question", emoji: "🔥", label: "ALGO MÁS ÍNTIMO", modeId: "intimo" },
 ];
 
-function MoodBtn({ btn }: { btn: MoodButton }) {
+function handleMoodPress(btn: MoodButton) {
+  if (btn.kind === "question") {
+    router.push(`/game?modeId=${btn.modeId}` as Parameters<typeof router.push>[0]);
+  } else {
+    const experience = generateQuickSession(btn.category);
+    setSession({
+      title: experience.title,
+      tagline: experience.tagline,
+      activities: experience.activities,
+    });
+    router.push("/session");
+  }
+}
+
+function MoodBtn({ btn, fullWidth }: { btn: MoodButton; fullWidth?: boolean }) {
   return (
     <Pressable
-      style={({ pressed }) => [styles.moodBtn, pressed && styles.moodBtnPressed]}
-      onPress={() => router.push(btn.route as Parameters<typeof router.push>[0])}
+      style={({ pressed }) => [
+        fullWidth ? styles.moodBtnFull : styles.moodBtn,
+        pressed && styles.moodBtnPressed,
+      ]}
+      onPress={() => handleMoodPress(btn)}
       accessibilityRole="button"
       accessibilityLabel={btn.label}
     >
       <Text style={styles.moodEmoji}>{btn.emoji}</Text>
-      <Text style={styles.moodLabel}>{btn.label.toUpperCase()}</Text>
+      <Text style={[styles.moodLabel, fullWidth && styles.moodLabelFull]}>
+        {btn.label}
+      </Text>
     </Pressable>
   );
 }
@@ -59,11 +82,12 @@ export default function HomeScreen() {
     }, [opacity, translateY])
   );
 
-  const randomGuided = GUIDED_NIGHTS[Math.floor(Math.random() * GUIDED_NIGHTS.length)];
+  const gridButtons = MOOD_BUTTONS.slice(0, 6);
+  const fullWidthBtn = MOOD_BUTTONS[6];
 
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Settings button */}
+      {/* Settings */}
       <View style={styles.topBar}>
         <View />
         <Pressable
@@ -95,71 +119,66 @@ export default function HomeScreen() {
             <Text style={styles.tagline}>{"¿Qué hacemos esta noche?"}</Text>
           </View>
 
-          {/* Mood grid: 3 rows of 2 + 1 full */}
+          {/* 3 rows of 2 mood buttons */}
           <View style={styles.moodGrid}>
-            {MOOD_BUTTONS.slice(0, 6).reduce<MoodButton[][]>((rows, btn, i) => {
-              const rowIdx = Math.floor(i / 2);
-              if (!rows[rowIdx]) rows[rowIdx] = [];
-              rows[rowIdx].push(btn);
-              return rows;
-            }, []).map((row, rowIdx) => (
-              <View key={rowIdx} style={styles.moodRow}>
-                {row.map((btn) => (
-                  <MoodBtn key={btn.label} btn={btn} />
-                ))}
+            {[0, 2, 4].map((start) => (
+              <View key={start} style={styles.moodRow}>
+                <MoodBtn btn={gridButtons[start]} />
+                <MoodBtn btn={gridButtons[start + 1]} />
               </View>
             ))}
-            {/* last full-width item */}
-            <Pressable
-              style={({ pressed }) => [styles.moodBtnFull, pressed && styles.moodBtnPressed]}
-              onPress={() => router.push(MOOD_BUTTONS[6].route as Parameters<typeof router.push>[0])}
-              accessibilityRole="button"
-              accessibilityLabel={MOOD_BUTTONS[6].label}
-            >
-              <Text style={styles.moodEmoji}>{MOOD_BUTTONS[6].emoji}</Text>
-              <Text style={styles.moodLabel}>{MOOD_BUTTONS[6].label.toUpperCase()}</Text>
-            </Pressable>
+            {/* Full-width last button */}
+            <MoodBtn btn={fullWidthBtn} fullWidth />
           </View>
 
           {/* Divider */}
           <View style={styles.divider} />
 
-          {/* Night configurator CTA */}
+          {/* ✨ Armarnos una noche — protagonist CTA */}
           <Pressable
             style={({ pressed }) => [styles.nightBtn, pressed && styles.nightBtnPressed]}
             onPress={() => router.push("/configure")}
             accessibilityRole="button"
-            accessibilityLabel="Armarse una noche"
+            accessibilityLabel="Armarnos una noche"
           >
             <View style={styles.nightBtnContent}>
               <Text style={styles.nightBtnEmoji}>✨</Text>
               <View style={styles.nightBtnText}>
-                <Text style={styles.nightBtnTitle}>ARMARSE UNA NOCHE</Text>
-                <Text style={styles.nightBtnDesc}>Configurá y te armamos el plan.</Text>
+                <Text style={styles.nightBtnTitle}>ARMARNOS UNA NOCHE</Text>
+                <Text style={styles.nightBtnDesc}>
+                  Configurá y te armamos el plan.
+                </Text>
               </View>
             </View>
             <Text style={styles.nightBtnArrow}>›</Text>
           </Pressable>
 
-          {/* Guided nights */}
+          {/* Guided experiences horizontal scroll */}
           <View style={styles.guidedSection}>
-            <Text style={styles.guidedSectionLabel}>NOCHES GUIADAS</Text>
+            <Text style={styles.guidedLabel}>NOCHES GUIADAS</Text>
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.guidedScroll}
             >
-              {GUIDED_NIGHTS.map((night) => (
+              {GUIDED_EXPERIENCES.map((exp) => (
                 <Pressable
-                  key={night.id}
-                  style={({ pressed }) => [styles.guidedCard, pressed && styles.guidedCardPressed]}
-                  onPress={() => router.push(`/night-plan?guidedId=${night.id}` as Parameters<typeof router.push>[0])}
+                  key={exp.id}
+                  style={({ pressed }) => [
+                    styles.guidedCard,
+                    pressed && styles.guidedCardPressed,
+                  ]}
+                  onPress={() =>
+                    router.push(
+                      `/night-plan?guidedId=${exp.id}` as Parameters<typeof router.push>[0]
+                    )
+                  }
                   accessibilityRole="button"
-                  accessibilityLabel={night.title}
+                  accessibilityLabel={exp.title}
                 >
-                  <Text style={styles.guidedCardEmoji}>{night.emoji}</Text>
-                  <Text style={styles.guidedCardTitle}>{night.title}</Text>
-                  <Text style={styles.guidedCardTagline}>{night.tagline}</Text>
+                  <Text style={styles.guidedCardEmoji}>{exp.emoji}</Text>
+                  <Text style={styles.guidedCardTitle}>{exp.title}</Text>
+                  <Text style={styles.guidedCardTagline}>{exp.tagline}</Text>
                 </Pressable>
               ))}
             </ScrollView>
@@ -229,11 +248,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surface,
     borderRadius: Radius.lg,
     paddingVertical: 16,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     alignItems: "center",
     gap: 6,
     borderWidth: 1,
     borderColor: "rgba(235,226,213,0.07)",
+    minHeight: 72,
+    justifyContent: "center",
   },
   moodBtnFull: {
     flexDirection: "row",
@@ -247,23 +268,28 @@ const styles = StyleSheet.create({
     borderColor: "rgba(235,226,213,0.07)",
   },
   moodBtnPressed: {
-    opacity: 0.75,
-    transform: [{ scale: 0.975 }],
+    opacity: 0.72,
+    transform: [{ scale: 0.972 }],
   },
   moodEmoji: {
     fontSize: 22,
   },
   moodLabel: {
     fontFamily: "Manrope_700Bold",
-    fontSize: 10,
-    letterSpacing: 1.5,
+    fontSize: 9,
+    letterSpacing: 1.8,
     color: Colors.text,
     textAlign: "center",
+  },
+  moodLabelFull: {
+    fontSize: 12,
+    letterSpacing: 2,
+    textAlign: "left",
   },
   divider: {
     height: 1,
     backgroundColor: "rgba(235,226,213,0.07)",
-    marginVertical: 4,
+    marginVertical: 2,
   },
   nightBtn: {
     backgroundColor: Colors.primary + "18",
@@ -313,7 +339,7 @@ const styles = StyleSheet.create({
   guidedSection: {
     gap: 12,
   },
-  guidedSectionLabel: {
+  guidedLabel: {
     fontFamily: "Manrope_700Bold",
     fontSize: 10,
     letterSpacing: 2.5,
@@ -333,7 +359,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(235,226,213,0.07)",
   },
   guidedCardPressed: {
-    opacity: 0.75,
+    opacity: 0.72,
     transform: [{ scale: 0.975 }],
   },
   guidedCardEmoji: {

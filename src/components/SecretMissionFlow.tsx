@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import { MissionContent } from "../data/experiences";
 import { Colors, Radius } from "../theme";
+
+type MissionLike = {
+  introText: string;
+  missionA: string;
+  missionB: string;
+  revealText: string;
+};
 
 type Phase = "intro_a" | "reveal_a" | "covered_a" | "reveal_b" | "done";
 
 interface Props {
-  content: MissionContent;
+  content: MissionLike;
   onDone: () => void;
 }
 

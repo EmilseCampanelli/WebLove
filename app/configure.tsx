@@ -14,7 +14,7 @@ import {
   TimeOption,
   EnergyOption,
   BudgetOption,
-} from "../src/data/nightPlans";
+} from "../src/data/generator";
 
 type ChipOption<T extends string> = { value: T; label: string; emoji: string };
 
@@ -96,7 +96,7 @@ export default function ConfigureScreen() {
   const handleGenerate = () => {
     if (!ready) return;
     router.push(
-      `/night-plan?place=${place}&time=${encodeURIComponent(time!)}&energy=${energy}&budget=${budget}`
+      `/night-plan?place=${place}&time=${encodeURIComponent(time!)}&energy=${energy}&budget=${budget}` as Parameters<typeof router.push>[0]
     );
   };
 
@@ -112,7 +112,7 @@ export default function ConfigureScreen() {
         >
           <Text style={styles.backIcon}>‹</Text>
         </Pressable>
-        <Text style={styles.navTitle}>ARMARSE UNA NOCHE</Text>
+        <Text style={styles.navTitle}>ARMARNOS UNA NOCHE</Text>
         <View style={{ width: 40 }} />
       </View>
 
@@ -121,12 +121,14 @@ export default function ConfigureScreen() {
         contentContainerStyle={styles.scroll}
       >
         <Text style={styles.pageTitle}>{"¿Cómo es\nesta noche?"}</Text>
-        <Text style={styles.pageTagline}>Configurá la noche. Nosotros armamos el plan.</Text>
+        <Text style={styles.pageTagline}>
+          Configurá la noche. Nosotros armamos el plan.
+        </Text>
 
-        <ChipGroup label="¿Dónde?" options={PLACES} selected={place} onSelect={setPlace} />
-        <ChipGroup label="¿Cuánto tiempo?" options={TIMES} selected={time} onSelect={setTime} />
-        <ChipGroup label="¿Qué energía?" options={ENERGIES} selected={energy} onSelect={setEnergy} />
-        <ChipGroup label="¿Qué presupuesto?" options={BUDGETS} selected={budget} onSelect={setBudget} />
+        <ChipGroup label="¿Dónde están?" options={PLACES} selected={place} onSelect={setPlace} />
+        <ChipGroup label="¿Cuánto tiempo tienen?" options={TIMES} selected={time} onSelect={setTime} />
+        <ChipGroup label="¿Qué energía tienen?" options={ENERGIES} selected={energy} onSelect={setEnergy} />
+        <ChipGroup label="¿Cuánto quieren gastar?" options={BUDGETS} selected={budget} onSelect={setBudget} />
 
         <Pressable
           style={({ pressed }) => [
