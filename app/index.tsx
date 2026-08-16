@@ -58,7 +58,7 @@ export default function HomeScreen() {
             <Text
               style={[
                 styles.title,
-                { fontSize: height < 680 ? 40 : 52, lineHeight: height < 680 ? 44 : 56 },
+                { fontSize: height < 680 ? 34 : 44, lineHeight: height < 680 ? 38 : 50 },
               ]}
             >
               {"ENTRE\nNOSOTROS"}
@@ -151,17 +151,17 @@ const styles = StyleSheet.create({
   scroll: {
     flexGrow: 1,
     paddingHorizontal: 24,
-    paddingTop: 8,
-    paddingBottom: 32,
+    paddingTop: 4,
+    paddingBottom: 20,
   },
   container: {
     flex: 1,
-    minHeight: 560,
+    minHeight: 480,
     justifyContent: "space-between",
-    gap: 32,
+    gap: 20,
   },
   header: {
-    gap: 12,
+    gap: 6,
   },
   title: {
     fontFamily: "InstrumentSerif_400Regular",
@@ -170,8 +170,8 @@ const styles = StyleSheet.create({
   },
   tagline: {
     fontFamily: "InstrumentSerif_400Regular",
-    fontSize: 17,
-    lineHeight: 25,
+    fontSize: 15,
+    lineHeight: 22,
     color: Colors.textSecondary,
     fontStyle: "italic",
   },
