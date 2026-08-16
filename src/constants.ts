@@ -1,5 +1,5 @@
 export const APP_NAME = "Entre Nosotros";
-export const APP_TAGLINE = "Una pregunta. Una mirada. Un poco más de nosotros.";
+export const APP_TAGLINE = "¿Qué hacemos esta noche?";
 export const APP_VERSION = "1.0.0";
 
 // Change this to swap the app name everywhere
