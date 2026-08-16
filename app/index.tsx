@@ -4,106 +4,138 @@ import {
   Text,
   StyleSheet,
   Animated,
-  ScrollView,
+  Pressable,
   useWindowDimensions,
 } from "react-native";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { PrimaryButton } from "../src/components/PrimaryButton";
-import { SecondaryButton } from "../src/components/SecondaryButton";
-import { APP_NAME, APP_TAGLINE } from "../src/constants";
-import { Colors, Typography, Spacing } from "../src/theme";
+import { Colors, Typography, Spacing, Radius, Shadow } from "../src/theme";
 import { useFocusEffect } from "expo-router";
 
 export default function HomeScreen() {
-  const { height } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
   const opacity = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(24)).current;
+  const translateY = useRef(new Animated.Value(16)).current;
 
   useFocusEffect(
     React.useCallback(() => {
       opacity.setValue(0);
-      translateY.setValue(24);
+      translateY.setValue(16);
       Animated.parallel([
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 600,
-          useNativeDriver: true,
-        }),
-        Animated.timing(translateY, {
-          toValue: 0,
-          duration: 600,
-          useNativeDriver: true,
-        }),
+        Animated.timing(opacity, { toValue: 1, duration: 480, useNativeDriver: true }),
+        Animated.timing(translateY, { toValue: 0, duration: 480, useNativeDriver: true }),
       ]).start();
     }, [opacity, translateY])
   );
 
+  // Card dimensions scale with screen width
+  const cardW = Math.min(width * 0.52, 220);
+  const cardH = cardW * 1.35;
+  // Deck container height = card + overflow for rotated cards
+  const deckH = cardH + 40;
+
   return (
     <SafeAreaView style={styles.safe}>
-      <ScrollView
-        contentContainerStyle={[styles.container, { minHeight: height - 100 }]}
-        showsVerticalScrollIndicator={false}
-      >
-        <Animated.View
-          style={[styles.hero, { opacity, transform: [{ translateY }] }]}
+      {/* Settings button — top right */}
+      <View style={styles.topBar}>
+        <View />
+        <Pressable
+          onPress={() => router.push("/settings")}
+          style={styles.settingsButton}
+          hitSlop={16}
+          accessibilityRole="button"
+          accessibilityLabel="Ajustes"
         >
-          {/* Logo area */}
-          <View style={styles.logoArea}>
-            <Text style={styles.logoEmoji}>💕</Text>
-            <Text style={styles.appName}>{APP_NAME}</Text>
-            <View style={styles.divider} />
-            <Text style={styles.tagline}>{APP_TAGLINE}</Text>
-          </View>
+          <Text style={styles.settingsIcon}>☀︎</Text>
+        </Pressable>
+      </View>
+      <Animated.View
+        style={[styles.container, { opacity, transform: [{ translateY }] }]}
+      >
+        {/* Title — editorial, left-aligned */}
+        <View style={styles.header}>
+          <Text
+            style={[
+              styles.title,
+              { fontSize: height < 680 ? 40 : 52, lineHeight: height < 680 ? 44 : 56 },
+            ]}
+          >
+            {"ENTRE\nNOSOTROS"}
+          </Text>
+          <Text style={styles.tagline}>
+            {"Una pregunta.\nUna mirada.\nUn poco más de nosotros."}
+          </Text>
+        </View>
 
-          {/* Decorative card preview */}
-          <View style={styles.cardPreview}>
-            <View style={styles.previewAccent} />
-            <Text style={styles.previewQuestion}>
-              "¿Cuál es tu recuerdo{"\n"}favorito de nosotros?"
-            </Text>
-            <Text style={styles.previewCategory}>CONEXIÓN</Text>
+        {/* Card deck — flex, scales to available space */}
+        <View style={[styles.deckArea, { height: deckH }]}>
+          {/* Back cards positioned relative to front card */}
+          <View
+            style={[
+              styles.deckCardBase,
+              {
+                width: cardW,
+                height: cardH,
+                borderRadius: 18,
+                transform: [{ rotate: "-9deg" }, { translateX: -14 }, { translateY: 16 }],
+                opacity: 0.4,
+                backgroundColor: "#DDD5C0",
+              },
+            ]}
+          />
+          <View
+            style={[
+              styles.deckCardBase,
+              {
+                width: cardW,
+                height: cardH,
+                borderRadius: 18,
+                transform: [{ rotate: "-3.5deg" }, { translateX: -5 }, { translateY: 8 }],
+                opacity: 0.65,
+                backgroundColor: "#EAE2CE",
+              },
+            ]}
+          />
+          {/* Front card */}
+          <View
+            style={[
+              styles.deckCardFront,
+              { width: cardW, height: cardH, borderRadius: 18 },
+            ]}
+          >
+            <Text style={styles.deckDiamond}>✦</Text>
+            <Text style={styles.deckBrand}>ENTRE NOSOTROS</Text>
+            <View style={styles.deckDivider} />
+            <Text style={styles.deckCount}>20 cartas</Text>
           </View>
-        </Animated.View>
+        </View>
 
-        <Animated.View style={[styles.actions, { opacity }]}>
-          <PrimaryButton
-            label="Empezar"
+        {/* Actions — always at bottom */}
+        <View style={styles.actions}>
+          <Pressable
+            style={({ pressed }) => [
+              styles.btnPrimary,
+              pressed && styles.btnPressed,
+            ]}
             onPress={() => router.push("/modes")}
-            style={styles.primaryBtn}
-          />
-          <SecondaryButton
-            label="Elegir un modo"
+            accessibilityRole="button"
+            accessibilityLabel="Empezar"
+          >
+            <Text style={styles.btnPrimaryLabel}>EMPEZAR</Text>
+          </Pressable>
+          <Pressable
+            style={({ pressed }) => [
+              styles.btnSecondary,
+              pressed && styles.btnPressed,
+            ]}
             onPress={() => router.push("/modes")}
-            style={styles.secondaryBtn}
-          />
-          <View style={styles.bottomLinks}>
-            <Text
-              style={styles.link}
-              onPress={() => router.push("/favorites")}
-              accessibilityRole="link"
-            >
-              Mis favoritas
-            </Text>
-            <Text style={styles.linkSeparator}>·</Text>
-            <Text
-              style={styles.link}
-              onPress={() => router.push("/history")}
-              accessibilityRole="link"
-            >
-              Historial
-            </Text>
-            <Text style={styles.linkSeparator}>·</Text>
-            <Text
-              style={styles.link}
-              onPress={() => router.push("/settings")}
-              accessibilityRole="link"
-            >
-              Ajustes
-            </Text>
-          </View>
-        </Animated.View>
-      </ScrollView>
+            accessibilityRole="button"
+            accessibilityLabel="Elegir un modo"
+          >
+            <Text style={styles.btnSecondaryLabel}>ELEGIR UN MODO</Text>
+          </Pressable>
+        </View>
+      </Animated.View>
     </SafeAreaView>
   );
 }
@@ -114,96 +146,116 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.background,
   },
   container: {
-    paddingHorizontal: Spacing.xl,
-    paddingTop: Spacing.xxl,
-    paddingBottom: Spacing.xl,
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 16,
+    paddingBottom: 20,
     justifyContent: "space-between",
   },
-  hero: {
-    flex: 1,
-    alignItems: "center",
-    marginBottom: Spacing.xxl,
+  header: {
+    gap: 12,
   },
-  logoArea: {
-    alignItems: "center",
-    marginBottom: Spacing.xxl,
-  },
-  logoEmoji: {
-    fontSize: 48,
-    marginBottom: Spacing.md,
-  },
-  appName: {
-    ...Typography.display,
+  title: {
+    fontFamily: "InstrumentSerif_400Regular",
     color: Colors.text,
-    textAlign: "center",
-  },
-  divider: {
-    width: 40,
-    height: 2,
-    backgroundColor: Colors.primary,
-    borderRadius: 1,
-    marginVertical: Spacing.md,
+    letterSpacing: -1,
   },
   tagline: {
-    ...Typography.body,
+    fontFamily: "InstrumentSerif_400Regular",
+    fontSize: 17,
+    lineHeight: 25,
     color: Colors.textSecondary,
-    textAlign: "center",
     fontStyle: "italic",
-    maxWidth: 280,
   },
-  cardPreview: {
-    backgroundColor: Colors.card,
-    borderRadius: 24,
-    padding: Spacing.xl,
-    paddingTop: 0,
-    width: "100%",
-    maxWidth: 340,
-    shadowColor: Colors.text,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.14,
-    shadowRadius: 24,
-    elevation: 10,
-    overflow: "hidden",
-  },
-  previewAccent: {
-    height: 4,
-    backgroundColor: Colors.primary,
-    marginBottom: Spacing.lg,
-  },
-  previewQuestion: {
-    ...Typography.question,
-    color: Colors.text,
-    textAlign: "center",
-    marginBottom: Spacing.lg,
-  },
-  previewCategory: {
-    ...Typography.label,
-    color: Colors.primary,
-    textAlign: "center",
-  },
-  actions: {
-    gap: Spacing.md,
-  },
-  primaryBtn: {
-    width: "100%",
-  },
-  secondaryBtn: {
-    width: "100%",
-  },
-  bottomLinks: {
-    flexDirection: "row",
-    justifyContent: "center",
+  // Deck
+  deckArea: {
     alignItems: "center",
-    marginTop: Spacing.sm,
-    gap: Spacing.sm,
+    justifyContent: "center",
   },
-  link: {
-    ...Typography.bodySmall,
+  deckCardBase: {
+    position: "absolute",
+    ...Shadow.large,
+  },
+  deckCardFront: {
+    backgroundColor: Colors.card,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    ...Shadow.large,
+  },
+  deckDiamond: {
+    fontSize: 24,
+    color: Colors.primary,
+    marginBottom: 2,
+  },
+  deckBrand: {
+    fontFamily: "Manrope_600SemiBold",
+    fontSize: 8,
+    letterSpacing: 3.5,
+    color: "rgba(28,16,24,0.45)",
+    textTransform: "uppercase",
+  },
+  deckDivider: {
+    width: 28,
+    height: 1,
+    backgroundColor: "rgba(28,16,24,0.18)",
+    marginVertical: 2,
+  },
+  deckCount: {
+    fontFamily: "InstrumentSerif_400Regular",
+    fontSize: 12,
+    color: "rgba(28,16,24,0.38)",
+    letterSpacing: 0.3,
+  },
+  topBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 4,
+  },
+  settingsButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 9999,
+    backgroundColor: "rgba(235,226,213,0.08)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  settingsIcon: {
+    fontSize: 18,
+    color: "rgba(235,226,213,0.55)",
+  },
+  // Actions
+  actions: {
+    gap: 10,
+  },
+  btnPrimary: {
+    backgroundColor: Colors.primary,
+    borderRadius: Radius.md,
+    height: 56,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnPrimaryLabel: {
+    ...Typography.button,
+    color: Colors.background,
+  },
+  btnSecondary: {
+    borderRadius: Radius.md,
+    height: 56,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(235,226,213,0.18)",
+  },
+  btnSecondaryLabel: {
+    ...Typography.button,
     color: Colors.textSecondary,
-    textDecorationLine: "underline",
   },
-  linkSeparator: {
-    ...Typography.bodySmall,
-    color: Colors.textTertiary,
+  btnPressed: {
+    opacity: 0.8,
+    transform: [{ scale: 0.975 }],
   },
 });

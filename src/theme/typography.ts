@@ -1,114 +1,94 @@
-import { Platform } from "react-native";
-
-const fontFamily = Platform.select({
-  ios: {
-    regular: "Georgia",
-    medium: "Georgia",
-    bold: "Georgia-Bold",
-    display: "Georgia-Bold",
-    sans: "System",
-    sansMedium: "System",
-  },
-  android: {
-    regular: "serif",
-    medium: "serif",
-    bold: "serif",
-    display: "serif",
-    sans: "sans-serif",
-    sansMedium: "sans-serif-medium",
-  },
-  default: {
-    regular: "Georgia",
-    medium: "Georgia",
-    bold: "Georgia-Bold",
-    display: "Georgia-Bold",
-    sans: "System",
-    sansMedium: "System",
-  },
-});
+export const FontFamily = {
+  serif: "InstrumentSerif_400Regular",
+  serifItalic: "InstrumentSerif_400Regular",
+  sans: "Manrope_400Regular",
+  sansMedium: "Manrope_600SemiBold",
+  sansBold: "Manrope_700Bold",
+} as const;
 
 export const Typography = {
-  // Display sizes
   display: {
-    fontFamily: fontFamily!.display,
-    fontSize: 36,
-    lineHeight: 44,
+    fontFamily: FontFamily.serif,
+    fontSize: 34,
+    lineHeight: 40,
     letterSpacing: -0.5,
   },
-  // Large headings
   h1: {
-    fontFamily: fontFamily!.bold,
+    fontFamily: FontFamily.serif,
     fontSize: 28,
-    lineHeight: 36,
+    lineHeight: 34,
     letterSpacing: -0.3,
   },
   h2: {
-    fontFamily: fontFamily!.bold,
+    fontFamily: FontFamily.serif,
     fontSize: 22,
-    lineHeight: 30,
+    lineHeight: 28,
     letterSpacing: -0.2,
   },
   h3: {
-    fontFamily: fontFamily!.medium,
+    fontFamily: FontFamily.sansMedium,
     fontSize: 18,
     lineHeight: 26,
   },
-  // Question text — main card
   question: {
-    fontFamily: fontFamily!.regular,
-    fontSize: 24,
-    lineHeight: 34,
-    letterSpacing: 0.1,
+    fontFamily: FontFamily.serif,
+    fontSize: 34,
+    lineHeight: 40,
+    letterSpacing: 0,
   },
   questionSmall: {
-    fontFamily: fontFamily!.regular,
-    fontSize: 20,
-    lineHeight: 30,
-    letterSpacing: 0.1,
+    fontFamily: FontFamily.serif,
+    fontSize: 26,
+    lineHeight: 32,
+    letterSpacing: 0,
   },
-  // Body
+  quoteItalic: {
+    fontFamily: FontFamily.serifItalic,
+    fontSize: 21,
+    lineHeight: 28,
+    letterSpacing: 0,
+  },
   body: {
-    fontFamily: fontFamily!.sans,
-    fontSize: 16,
-    lineHeight: 24,
+    fontFamily: FontFamily.sans,
+    fontSize: 15,
+    lineHeight: 22,
   },
   bodySmall: {
-    fontFamily: fontFamily!.sans,
+    fontFamily: FontFamily.sans,
     fontSize: 14,
     lineHeight: 20,
   },
-  // Labels
   label: {
-    fontFamily: fontFamily!.sansMedium,
-    fontSize: 13,
-    lineHeight: 18,
-    letterSpacing: 0.8,
+    fontFamily: FontFamily.sansBold,
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 2.5,
     textTransform: "uppercase" as const,
   },
   labelSmall: {
-    fontFamily: fontFamily!.sansMedium,
+    fontFamily: FontFamily.sansBold,
     fontSize: 11,
-    lineHeight: 16,
-    letterSpacing: 1,
+    lineHeight: 14,
+    letterSpacing: 2,
     textTransform: "uppercase" as const,
   },
-  // Caption
   caption: {
-    fontFamily: fontFamily!.sans,
-    fontSize: 12,
-    lineHeight: 16,
+    fontFamily: FontFamily.sans,
+    fontSize: 11,
+    lineHeight: 15,
   },
-  // Button text
   button: {
-    fontFamily: fontFamily!.sansMedium,
-    fontSize: 16,
-    lineHeight: 22,
-    letterSpacing: 0.3,
+    fontFamily: FontFamily.sansBold,
+    fontSize: 13,
+    lineHeight: 18,
+    letterSpacing: 2,
+    textTransform: "uppercase" as const,
   },
   buttonSmall: {
-    fontFamily: fontFamily!.sansMedium,
-    fontSize: 14,
-    lineHeight: 20,
-    letterSpacing: 0.2,
+    fontFamily: FontFamily.sansMedium,
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 1.5,
+    textTransform: "uppercase" as const,
   },
 };

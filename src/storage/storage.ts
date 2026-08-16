@@ -79,7 +79,11 @@ export async function addToHistory(entry: HistoryEntry): Promise<void> {
 }
 
 export async function clearHistory(): Promise<void> {
-  return setItem(KEYS.HISTORY, []);
+  try {
+    await AsyncStorage.removeItem(KEYS.HISTORY);
+  } catch {
+    return setItem(KEYS.HISTORY, []);
+  }
 }
 
 // ── Settings ─────────────────────────────────────────────────────────────────

@@ -35,8 +35,8 @@ export function useFavorites(): UseFavoritesResult {
   }, []);
 
   const clearAll = useCallback(async () => {
-    await saveFavorites([]);
     setFavorites([]);
+    await saveFavorites([]);
   }, []);
 
   return { favorites, isFavorite, toggle, clearAll, isLoaded };

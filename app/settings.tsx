@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   View,
   Text,
@@ -8,29 +8,25 @@ import {
   Pressable,
   Alert,
 } from "react-native";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSettings } from "../src/hooks/useSettings";
 import { useFavorites } from "../src/hooks/useFavorites";
 import { useHistory } from "../src/hooks/useHistory";
-import { Colors, Typography, Spacing, Radius } from "../src/theme";
-import { APP_NAME, APP_VERSION } from "../src/constants";
+import { Colors, Radius, Spacing } from "../src/theme";
+import { APP_VERSION } from "../src/constants";
 import { AppSettings } from "../src/storage/storage";
 
-type SettingRowProps = {
-  label: string;
-  value: boolean;
-  onToggle: (v: boolean) => void;
-};
+type RowProps = { label: string; value: boolean; onToggle: (v: boolean) => void };
 
-function SettingRow({ label, value, onToggle }: SettingRowProps) {
+function ToggleRow({ label, value, onToggle }: RowProps) {
   return (
     <View style={styles.row}>
       <Text style={styles.rowLabel}>{label}</Text>
       <Switch
         value={value}
         onValueChange={onToggle}
-        trackColor={{ false: Colors.border, true: Colors.primary }}
+        trackColor={{ false: "rgba(235,226,213,0.12)", true: Colors.accent }}
         thumbColor={Colors.white}
         accessibilityLabel={label}
         accessibilityRole="switch"
@@ -42,20 +38,31 @@ function SettingRow({ label, value, onToggle }: SettingRowProps) {
 
 export default function SettingsScreen() {
   const { settings, setSetting } = useSettings();
-  const { clearAll: clearFavorites } = useFavorites();
-  const { clearAll: clearHistory } = useHistory();
+  const { favorites, clearAll: clearFavorites } = useFavorites();
+  const { history, clearAll: clearHistory, reload: reloadHistory } = useHistory();
 
-  const toggle = <K extends keyof AppSettings>(key: K) => (v: boolean) => {
+  useFocusEffect(
+    useCallback(() => {
+      void reloadHistory();
+    }, [reloadHistory])
+  );
+
+  const toggle = <K extends keyof AppSettings>(key: K) => (v: boolean) =>
     void setSetting(key, v as AppSettings[K]);
-  };
 
   const handleClearFavorites = () => {
     Alert.alert(
-      "Limpiar favoritas",
-      "¿Seguro que querés borrar todas tus preguntas favoritas?",
+      "Limpiar favoritos",
+      "¿Querés borrar todas tus preguntas favoritas?",
       [
         { text: "Cancelar", style: "cancel" },
-        { text: "Borrar todo", style: "destructive", onPress: () => void clearFavorites() },
+        {
+          text: "Borrar todo",
+          style: "destructive",
+          onPress: async () => {
+            await clearFavorites();
+          },
+        },
       ]
     );
   };
@@ -63,99 +70,86 @@ export default function SettingsScreen() {
   const handleClearHistory = () => {
     Alert.alert(
       "Limpiar historial",
-      "¿Seguro que querés borrar todo el historial?",
+      "¿Querés borrar todo el historial?",
       [
         { text: "Cancelar", style: "cancel" },
-        { text: "Borrar todo", style: "destructive", onPress: () => void clearHistory() },
+        {
+          text: "Borrar todo",
+          style: "destructive",
+          onPress: async () => {
+            await clearHistory();
+            await reloadHistory();
+          },
+        },
       ]
     );
   };
 
   return (
     <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
-      <View style={styles.header}>
+      {/* Nav */}
+      <View style={styles.nav}>
         <Pressable
-          onPress={() => router.back()}
-          style={styles.backButton}
+          onPress={() => router.canGoBack() ? router.back() : router.replace("/")}
+          style={styles.backBtn}
           hitSlop={16}
           accessibilityRole="button"
           accessibilityLabel="Volver"
         >
-          <Text style={styles.backIcon}>←</Text>
+          <Text style={styles.backIcon}>‹</Text>
         </Pressable>
-        <Text style={styles.title}>Ajustes</Text>
-        <View style={styles.backButton} />
+        <Text style={styles.navTitle}>AJUSTES</Text>
+        <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
-        {/* Experience */}
-        <Text style={styles.sectionTitle}>Experiencia</Text>
-        <View style={styles.section}>
-          <SettingRow
-            label="Animaciones"
-            value={settings.animationsEnabled}
-            onToggle={toggle("animationsEnabled")}
-          />
-          <View style={styles.separator} />
-          <SettingRow
-            label="Vibración"
-            value={settings.vibrationEnabled}
-            onToggle={toggle("vibrationEnabled")}
-          />
-          <View style={styles.separator} />
-          <SettingRow
-            label="Sonido"
-            value={settings.soundEnabled}
-            onToggle={toggle("soundEnabled")}
-          />
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+        {/* Page title */}
+        <Text style={styles.pageTitle}>Ajustes</Text>
+
+        {/* Toggles */}
+        <View style={styles.group}>
+          <ToggleRow label="Animaciones" value={settings.animationsEnabled} onToggle={toggle("animationsEnabled")} />
+          <View style={styles.sep} />
+          <ToggleRow label="Sonido" value={settings.soundEnabled} onToggle={toggle("soundEnabled")} />
+          <View style={styles.sep} />
+          <ToggleRow label="Vibración" value={settings.vibrationEnabled} onToggle={toggle("vibrationEnabled")} />
+          <View style={styles.sep} />
+          <ToggleRow label="Modo oscuro" value={settings.darkMode} onToggle={toggle("darkMode")} />
         </View>
 
-        {/* Appearance */}
-        <Text style={styles.sectionTitle}>Apariencia</Text>
-        <View style={styles.section}>
-          <SettingRow
-            label="Modo oscuro"
-            value={settings.darkMode}
-            onToggle={toggle("darkMode")}
-          />
-        </View>
-
-        {/* Data */}
-        <Text style={styles.sectionTitle}>Datos</Text>
-        <View style={styles.section}>
+        {/* Data counts */}
+        <View style={styles.group}>
           <Pressable
             style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
             onPress={handleClearFavorites}
             accessibilityRole="button"
           >
-            <Text style={[styles.rowLabel, styles.destructiveLabel]}>
-              Limpiar favoritas
-            </Text>
+            <Text style={styles.rowLabel}>Favoritos</Text>
+            <View style={styles.rowEnd}>
+              <Text style={styles.rowCount}>{favorites.length}</Text>
+              <Text style={styles.trashIcon}>Limpiar</Text>
+            </View>
           </Pressable>
-          <View style={styles.separator} />
+          <View style={styles.sep} />
           <Pressable
             style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
             onPress={handleClearHistory}
             accessibilityRole="button"
           >
-            <Text style={[styles.rowLabel, styles.destructiveLabel]}>
-              Limpiar historial
-            </Text>
+            <Text style={styles.rowLabel}>Historial</Text>
+            <View style={styles.rowEnd}>
+              <Text style={styles.rowCount}>{history.length}</Text>
+              <Text style={styles.trashIcon}>Limpiar</Text>
+            </View>
           </Pressable>
         </View>
 
-        {/* About */}
-        <Text style={styles.sectionTitle}>Sobre la app</Text>
-        <View style={styles.section}>
-          <View style={styles.row}>
-            <Text style={styles.rowLabel}>Aplicación</Text>
-            <Text style={styles.rowValue}>{APP_NAME}</Text>
-          </View>
-          <View style={styles.separator} />
-          <View style={styles.row}>
-            <Text style={styles.rowLabel}>Versión</Text>
-            <Text style={styles.rowValue}>{APP_VERSION}</Text>
-          </View>
+        {/* About card */}
+        <View style={styles.aboutCard}>
+          <Text style={styles.aboutTitle}>SOBRE ENTRE NOSOTROS</Text>
+          <Text style={styles.aboutBody}>
+            {"Hecha para dos personas, un sillón\ny un rato sin apuro. Versión " + APP_VERSION}
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -167,66 +161,110 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  header: {
+  nav: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.md,
     justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 4,
   },
-  backButton: {
+  backBtn: {
     width: 40,
+    height: 40,
+    borderRadius: Radius.full,
+    backgroundColor: "rgba(235,226,213,0.08)",
     alignItems: "center",
+    justifyContent: "center",
   },
   backIcon: {
-    fontSize: 22,
+    fontSize: 26,
     color: Colors.text,
+    lineHeight: 30,
   },
-  title: {
-    ...Typography.h2,
+  navTitle: {
+    fontFamily: "Manrope_700Bold",
+    fontSize: 11,
+    letterSpacing: 2.5,
+    color: Colors.textSecondary,
+  },
+  scroll: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 48,
+    gap: 16,
+  },
+  pageTitle: {
+    fontFamily: "InstrumentSerif_400Regular",
+    fontSize: 34,
+    lineHeight: 40,
     color: Colors.text,
+    marginBottom: 8,
   },
-  content: {
-    paddingHorizontal: Spacing.lg,
-    paddingBottom: Spacing.xxl,
-  },
-  sectionTitle: {
-    ...Typography.label,
-    color: Colors.textTertiary,
-    marginBottom: Spacing.sm,
-    marginTop: Spacing.lg,
-    paddingHorizontal: Spacing.sm,
-  },
-  section: {
-    backgroundColor: Colors.card,
+  group: {
+    backgroundColor: Colors.surface,
     borderRadius: Radius.lg,
     overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(235,226,213,0.07)",
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.md,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
     minHeight: 52,
   },
   rowPressed: {
-    backgroundColor: Colors.overlayLight,
+    backgroundColor: "rgba(235,226,213,0.05)",
   },
   rowLabel: {
-    ...Typography.body,
+    fontFamily: "Manrope_400Regular",
+    fontSize: 16,
     color: Colors.text,
   },
-  rowValue: {
-    ...Typography.body,
-    color: Colors.textSecondary,
+  rowCount: {
+    fontFamily: "Manrope_400Regular",
+    fontSize: 16,
+    color: Colors.textTertiary,
   },
-  destructiveLabel: {
+  rowEnd: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  trashIcon: {
+    fontFamily: "Manrope_400Regular",
+    fontSize: 12,
+    letterSpacing: 0.5,
     color: Colors.error,
+    opacity: 0.7,
   },
-  separator: {
+  sep: {
     height: 1,
-    backgroundColor: Colors.border,
-    marginHorizontal: Spacing.md,
+    backgroundColor: "rgba(235,226,213,0.07)",
+    marginHorizontal: 16,
+  },
+  aboutCard: {
+    backgroundColor: Colors.surface,
+    borderRadius: Radius.lg,
+    padding: 20,
+    gap: 8,
+    borderWidth: 1,
+    borderColor: "rgba(235,226,213,0.07)",
+  },
+  aboutTitle: {
+    fontFamily: "Manrope_700Bold",
+    fontSize: 10,
+    letterSpacing: 2.5,
+    color: Colors.primary,
+  },
+  aboutBody: {
+    fontFamily: "InstrumentSerif_400Regular",
+    fontSize: 15,
+    lineHeight: 22,
+    color: Colors.textSecondary,
+    fontStyle: "italic",
   },
 });

@@ -25,6 +25,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   diversion: Colors.diversion,
   profundo: Colors.profundo,
   sorpresa: Colors.sorpresa,
+  previas: "#7A8B5E",
 };
 
 export function QuestionCard({
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
   },
   questionText: {
     ...Typography.question,
-    color: Colors.text,
+    color: Colors.cardText,
     flex: 1,
     textAlignVertical: "center",
     paddingVertical: Spacing.md,
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
   },
   specialText: {
     ...Typography.h2,
-    color: Colors.text,
+    color: Colors.cardText,
     textAlign: "center",
     paddingHorizontal: Spacing.xl,
   },

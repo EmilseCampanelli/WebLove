@@ -48,7 +48,7 @@ export default function FavoritesScreen() {
     <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
       <View style={styles.header}>
         <Pressable
-          onPress={() => router.back()}
+          onPress={() => router.canGoBack() ? router.back() : router.replace("/")}
           style={styles.backButton}
           hitSlop={16}
           accessibilityRole="button"

@@ -94,7 +94,7 @@ export default function GameScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Pressable
-          onPress={() => router.back()}
+          onPress={() => router.canGoBack() ? router.back() : router.replace("/")}
           style={styles.backButton}
           hitSlop={16}
           accessibilityRole="button"
@@ -112,7 +112,15 @@ export default function GameScreen() {
             </Text>
           )}
         </View>
-        <View style={styles.backButton} />
+        <Pressable
+          onPress={() => router.push("/settings")}
+          style={styles.settingsButton}
+          hitSlop={16}
+          accessibilityRole="button"
+          accessibilityLabel="Ajustes"
+        >
+          <Text style={styles.settingsIcon}>☀︎</Text>
+        </Pressable>
       </View>
 
       <ScrollView
@@ -207,6 +215,18 @@ const styles = StyleSheet.create({
   backIcon: {
     fontSize: 22,
     color: Colors.text,
+  },
+  settingsButton: {
+    width: 40,
+    height: 40,
+    borderRadius: Radius.full,
+    backgroundColor: "rgba(235,226,213,0.08)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  settingsIcon: {
+    fontSize: 18,
+    color: Colors.textSecondary,
   },
   headerCenter: {
     alignItems: "center",

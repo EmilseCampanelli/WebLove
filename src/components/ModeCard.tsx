@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, Text, StyleSheet, View } from "react-native";
 import { GameMode } from "../data/modes";
-import { Colors, Typography, Spacing, Radius, Shadow } from "../theme";
+import { Colors, Typography, Spacing, Radius } from "../theme";
 
 type Props = {
   mode: GameMode;
@@ -12,69 +12,70 @@ export function ModeCard({ mode, onPress }: Props) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.card,
-        pressed && styles.pressed,
-      ]}
+      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
       accessibilityRole="button"
       accessibilityLabel={`${mode.label}. ${mode.description}`}
     >
-      <View style={[styles.emojiContainer, { backgroundColor: mode.color + "22" }]}>
+      <View style={[styles.emojiBox, { backgroundColor: mode.color + "28" }]}>
         <Text style={styles.emoji}>{mode.emoji}</Text>
       </View>
       <View style={styles.content}>
-        <Text style={styles.label}>{mode.label}</Text>
+        <Text style={styles.label}>{mode.label.toUpperCase()}</Text>
         <Text style={styles.description}>{mode.description}</Text>
-        <Text style={[styles.count, { color: mode.color }]}>
-          {mode.questionCount} preguntas
-        </Text>
       </View>
+      <Text style={styles.arrow}>›</Text>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: Colors.card,
+    backgroundColor: Colors.surface,
     borderRadius: Radius.lg,
-    padding: Spacing.md,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: Spacing.md,
-    ...Shadow.small,
+    marginBottom: 10,
     borderWidth: 1,
-    borderColor: Colors.border,
+    borderColor: "rgba(235,226,213,0.07)",
   },
   pressed: {
-    opacity: 0.82,
-    transform: [{ scale: 0.985 }],
+    opacity: 0.78,
+    transform: [{ scale: 0.983 }],
   },
-  emojiContainer: {
-    width: 52,
-    height: 52,
-    borderRadius: Radius.md,
+  emojiBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: Spacing.md,
+    marginRight: 14,
     flexShrink: 0,
   },
   emoji: {
-    fontSize: 26,
+    fontSize: 24,
   },
   content: {
     flex: 1,
+    gap: 3,
   },
   label: {
-    ...Typography.h3,
+    fontFamily: "Manrope_700Bold",
+    fontSize: 12,
+    letterSpacing: 1.8,
     color: Colors.text,
-    marginBottom: 2,
   },
   description: {
-    ...Typography.bodySmall,
+    fontFamily: "InstrumentSerif_400Regular",
+    fontSize: 14,
+    lineHeight: 19,
     color: Colors.textSecondary,
-    marginBottom: Spacing.xs,
+    fontStyle: "italic",
   },
-  count: {
-    ...Typography.labelSmall,
+  arrow: {
+    fontSize: 22,
+    color: Colors.textTertiary,
+    marginLeft: 8,
   },
 });
