@@ -7,6 +7,7 @@ import {
   ScrollView,
   Pressable,
   Alert,
+  Platform,
 } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -50,40 +51,29 @@ export default function SettingsScreen() {
   const toggle = <K extends keyof AppSettings>(key: K) => (v: boolean) =>
     void setSetting(key, v as AppSettings[K]);
 
-  const handleClearFavorites = () => {
-    Alert.alert(
-      "Limpiar favoritos",
-      "¿Querés borrar todas tus preguntas favoritas?",
-      [
+  const confirmAndRun = (msg: string, action: () => Promise<void>) => {
+    if (Platform.OS === "web") {
+      // Alert.alert no funciona confiablemente en web builds estáticos
+      if (window.confirm(msg)) void action();
+    } else {
+      Alert.alert("Confirmar", msg, [
         { text: "Cancelar", style: "cancel" },
-        {
-          text: "Borrar todo",
-          style: "destructive",
-          onPress: async () => {
-            await clearFavorites();
-          },
-        },
-      ]
-    );
+        { text: "Borrar todo", style: "destructive", onPress: () => void action() },
+      ]);
+    }
   };
 
-  const handleClearHistory = () => {
-    Alert.alert(
-      "Limpiar historial",
-      "¿Querés borrar todo el historial?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Borrar todo",
-          style: "destructive",
-          onPress: async () => {
-            await clearHistory();
-            await reloadHistory();
-          },
-        },
-      ]
+  const handleClearFavorites = () =>
+    confirmAndRun(
+      "¿Querés borrar todas tus preguntas favoritas?",
+      async () => { await clearFavorites(); }
     );
-  };
+
+  const handleClearHistory = () =>
+    confirmAndRun(
+      "¿Querés borrar todo el historial?",
+      async () => { await clearHistory(); await reloadHistory(); }
+    );
 
   return (
     <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>

@@ -5,12 +5,12 @@ import {
   StyleSheet,
   Animated,
   Pressable,
+  ScrollView,
   useWindowDimensions,
 } from "react-native";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Colors, Typography, Spacing, Radius, Shadow } from "../src/theme";
-import { useFocusEffect } from "expo-router";
+import { Colors, Typography, Radius, Shadow } from "../src/theme";
 
 export default function HomeScreen() {
   const { height, width } = useWindowDimensions();
@@ -28,10 +28,8 @@ export default function HomeScreen() {
     }, [opacity, translateY])
   );
 
-  // Card dimensions scale with screen width
   const cardW = Math.min(width * 0.52, 220);
   const cardH = cardW * 1.35;
-  // Deck container height = card + overflow for rotated cards
   const deckH = cardH + 40;
 
   return (
@@ -49,93 +47,78 @@ export default function HomeScreen() {
           <Text style={styles.settingsIcon}>☀︎</Text>
         </Pressable>
       </View>
-      <Animated.View
-        style={[styles.container, { opacity, transform: [{ translateY }] }]}
+
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
       >
-        {/* Title — editorial, left-aligned */}
-        <View style={styles.header}>
-          <Text
-            style={[
-              styles.title,
-              { fontSize: height < 680 ? 40 : 52, lineHeight: height < 680 ? 44 : 56 },
-            ]}
-          >
-            {"ENTRE\nNOSOTROS"}
-          </Text>
-          <Text style={styles.tagline}>
-            {"Una pregunta.\nUna mirada.\nUn poco más de nosotros."}
-          </Text>
-        </View>
-
-        {/* Card deck — flex, scales to available space */}
-        <View style={[styles.deckArea, { height: deckH }]}>
-          {/* Back cards positioned relative to front card */}
-          <View
-            style={[
-              styles.deckCardBase,
-              {
-                width: cardW,
-                height: cardH,
-                borderRadius: 18,
-                transform: [{ rotate: "-9deg" }, { translateX: -14 }, { translateY: 16 }],
-                opacity: 0.4,
-                backgroundColor: "#DDD5C0",
-              },
-            ]}
-          />
-          <View
-            style={[
-              styles.deckCardBase,
-              {
-                width: cardW,
-                height: cardH,
-                borderRadius: 18,
-                transform: [{ rotate: "-3.5deg" }, { translateX: -5 }, { translateY: 8 }],
-                opacity: 0.65,
-                backgroundColor: "#EAE2CE",
-              },
-            ]}
-          />
-          {/* Front card */}
-          <View
-            style={[
-              styles.deckCardFront,
-              { width: cardW, height: cardH, borderRadius: 18 },
-            ]}
-          >
-            <Text style={styles.deckDiamond}>✦</Text>
-            <Text style={styles.deckBrand}>ENTRE NOSOTROS</Text>
-            <View style={styles.deckDivider} />
-            <Text style={styles.deckCount}>20 cartas</Text>
+        <Animated.View style={[styles.container, { opacity, transform: [{ translateY }] }]}>
+          {/* Title */}
+          <View style={styles.header}>
+            <Text
+              style={[
+                styles.title,
+                { fontSize: height < 680 ? 40 : 52, lineHeight: height < 680 ? 44 : 56 },
+              ]}
+            >
+              {"ENTRE\nNOSOTROS"}
+            </Text>
+            <Text style={styles.tagline}>
+              {"Una pregunta.\nUna mirada.\nUn poco más de nosotros."}
+            </Text>
           </View>
-        </View>
 
-        {/* Actions — always at bottom */}
-        <View style={styles.actions}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.btnPrimary,
-              pressed && styles.btnPressed,
-            ]}
-            onPress={() => router.push("/modes")}
-            accessibilityRole="button"
-            accessibilityLabel="Empezar"
-          >
-            <Text style={styles.btnPrimaryLabel}>EMPEZAR</Text>
-          </Pressable>
-          <Pressable
-            style={({ pressed }) => [
-              styles.btnSecondary,
-              pressed && styles.btnPressed,
-            ]}
-            onPress={() => router.push("/modes")}
-            accessibilityRole="button"
-            accessibilityLabel="Elegir un modo"
-          >
-            <Text style={styles.btnSecondaryLabel}>ELEGIR UN MODO</Text>
-          </Pressable>
-        </View>
-      </Animated.View>
+          {/* Card deck */}
+          <View style={[styles.deckArea, { height: deckH }]}>
+            <View
+              style={[
+                styles.deckCardBase,
+                {
+                  width: cardW, height: cardH, borderRadius: 18,
+                  transform: [{ rotate: "-9deg" }, { translateX: -14 }, { translateY: 16 }],
+                  opacity: 0.4, backgroundColor: "#DDD5C0",
+                },
+              ]}
+            />
+            <View
+              style={[
+                styles.deckCardBase,
+                {
+                  width: cardW, height: cardH, borderRadius: 18,
+                  transform: [{ rotate: "-3.5deg" }, { translateX: -5 }, { translateY: 8 }],
+                  opacity: 0.65, backgroundColor: "#EAE2CE",
+                },
+              ]}
+            />
+            <View style={[styles.deckCardFront, { width: cardW, height: cardH, borderRadius: 18 }]}>
+              <Text style={styles.deckDiamond}>✦</Text>
+              <Text style={styles.deckBrand}>ENTRE NOSOTROS</Text>
+              <View style={styles.deckDivider} />
+              <Text style={styles.deckCount}>20 cartas</Text>
+            </View>
+          </View>
+
+          {/* Actions */}
+          <View style={styles.actions}>
+            <Pressable
+              style={({ pressed }) => [styles.btnPrimary, pressed && styles.btnPressed]}
+              onPress={() => router.push("/modes")}
+              accessibilityRole="button"
+              accessibilityLabel="Empezar"
+            >
+              <Text style={styles.btnPrimaryLabel}>EMPEZAR</Text>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [styles.btnSecondary, pressed && styles.btnPressed]}
+              onPress={() => router.push("/modes")}
+              accessibilityRole="button"
+              accessibilityLabel="Elegir un modo"
+            >
+              <Text style={styles.btnSecondaryLabel}>ELEGIR UN MODO</Text>
+            </Pressable>
+          </View>
+        </Animated.View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -145,12 +128,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
+  topBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    paddingBottom: 4,
+  },
+  settingsButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 9999,
+    backgroundColor: "rgba(235,226,213,0.08)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  settingsIcon: {
+    fontSize: 18,
+    color: "rgba(235,226,213,0.55)",
+  },
+  scroll: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+    paddingTop: 8,
+    paddingBottom: 32,
+  },
   container: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 20,
+    minHeight: 560,
     justifyContent: "space-between",
+    gap: 32,
   },
   header: {
     gap: 12,
@@ -167,7 +175,6 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     fontStyle: "italic",
   },
-  // Deck
   deckArea: {
     alignItems: "center",
     justifyContent: "center",
@@ -207,27 +214,6 @@ const styles = StyleSheet.create({
     color: "rgba(28,16,24,0.38)",
     letterSpacing: 0.3,
   },
-  topBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    paddingBottom: 4,
-  },
-  settingsButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 9999,
-    backgroundColor: "rgba(235,226,213,0.08)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  settingsIcon: {
-    fontSize: 18,
-    color: "rgba(235,226,213,0.55)",
-  },
-  // Actions
   actions: {
     gap: 10,
   },
