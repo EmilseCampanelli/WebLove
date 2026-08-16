@@ -45,6 +45,7 @@ export interface ChallengeContent {
   prompt: string;
   timeLimitSeconds?: number;
   winCondition?: string;
+  prompts?: string[];
 }
 
 export interface GameContent {
@@ -562,7 +563,24 @@ export const ACTIVITY_POOL: Activity[] = [
     content: {
       kind: "challenge",
       prompt:
-        "Por turnos: imitá el gesto, frase o costumbre más típica del otro. El otro tiene que adivinar qué gesto está haciendo.",
+        "Por turnos: imitá lo que dice la app. El otro adivina de quién es.",
+      prompts: [
+        "Cómo camina cuando está apurado/a",
+        "Cómo pide perdón",
+        "Cómo reacciona cuando algo le da asco",
+        "Cómo se ríe cuando algo le parece muy gracioso",
+        "Cómo reacciona cuando pierde algo",
+        "Cómo explica algo complicado",
+        "Cómo se queja cuando tiene frío",
+        "Cómo reacciona cuando está aburrido/a",
+        "Cómo dice 'te quiero' sin palabras",
+        "Cómo entra a un lugar cuando llega tarde",
+        "Cómo come algo que le encanta",
+        "Cómo reacciona cuando se le olvida algo importante",
+        "Cómo baila cuando está solo/a en casa",
+        "Cómo dice que no sin decir que no",
+        "Cómo reacciona cuando algo le sale perfecto",
+      ],
     },
   },
   {
@@ -622,10 +640,32 @@ export const ACTIVITY_POOL: Activity[] = [
     content: {
       kind: "game",
       rules:
-        "Por turnos, uno hace una pregunta sobre sí mismo (ej: '¿cuál es mi comida favorita?'). El otro responde. Si acierta, suma un punto. Juegan 5 rondas cada uno.",
-      rounds: 5,
+        "La app da una pregunta sobre uno de los dos. El otro responde. Si acierta, punto para él. 10 rondas.",
+      rounds: 10,
       trackScore: true,
-      turnInstructions: "Cada uno hace 5 preguntas sobre sí mismo.",
+      turnInstructions: "Lean la pregunta y respondan sobre su pareja.",
+      questions: [
+        "¿Cuál es su mayor miedo?",
+        "¿Qué la/lo hace reír instantáneamente?",
+        "¿Cómo reacciona cuando está nervioso/a?",
+        "¿Cuál es su canción de cabecera?",
+        "¿Qué haría con un día libre sin obligaciones?",
+        "¿Cuál es su comida favorita?",
+        "¿Qué superpoder elegiría?",
+        "¿Qué hace cuando está de mal humor?",
+        "¿Cuál es su mayor orgullo personal?",
+        "¿Qué es lo primero que hace al levantarse?",
+        "¿Cuál es su película favorita de todos los tiempos?",
+        "¿Qué le cuesta más pedir: ayuda o perdón?",
+        "¿Cómo prefiere que le demuestren cariño?",
+        "¿Qué cambiaría de sí mismo/a si pudiera?",
+        "¿Cuál es su recuerdo favorito de la infancia?",
+        "¿Qué la/lo pone de buen humor enseguida?",
+        "¿Dónde viviría si pudiera vivir en cualquier lugar?",
+        "¿Qué haría si ganara mucho dinero?",
+        "¿Qué virtud suya más te gusta?",
+        "¿Qué costumbre suya te parece adorable?",
+      ],
     },
   },
   {
@@ -665,10 +705,32 @@ export const ACTIVITY_POOL: Activity[] = [
     content: {
       kind: "game",
       rules:
-        "Uno hace preguntas rápidas durante 30 segundos. El otro responde solo con la primera palabra que le venga. Sin pensar. Luego cambien.",
-      rounds: 2,
+        "La app da un disparador. Los dos responden al mismo tiempo con la primera palabra que les venga. Sin pensar. Sin filtro.",
+      rounds: 12,
       trackScore: false,
-      turnInstructions: "30 segundos de preguntas, luego cambien.",
+      turnInstructions: "Respondan juntos a la vez. No vale pensar.",
+      questions: [
+        "¿Playa o montaña?",
+        "¿Madrugada o amanecer?",
+        "¿Lo más lindo que pasó este año?",
+        "¿Qué cambiarías de hoy?",
+        "¿Una palabra para describir esta noche?",
+        "¿Ciudad o campo?",
+        "¿Silencio o música?",
+        "¿Aventura o tranquilidad?",
+        "¿Qué querés que pase mañana?",
+        "¿Una cosa que nunca te cansas de hacer?",
+        "¿Invierno o verano?",
+        "¿Casa o salir?",
+        "¿Algo que te da miedo perder?",
+        "¿Una cosa que te da mucha alegría?",
+        "¿Qué es lo más importante para vos en una relación?",
+        "¿Desayuno o cena?",
+        "¿Libro o película?",
+        "¿Algo que te gustaría aprender?",
+        "¿Qué es lo que más te relaja?",
+        "¿Un lugar al que quieras volver?",
+      ],
     },
   },
   {

@@ -89,14 +89,33 @@ function ChallengeRenderer({
 }) {
   const [timerStarted, setTimerStarted] = useState(false);
   const timer = useTimer(content.timeLimitSeconds ?? 60);
+  const [round, setRound] = useState(0);
+  const [prompts] = useState<string[]>(() =>
+    content.prompts ? shuffle(content.prompts) : []
+  );
+  const totalRounds = prompts.length;
+  const currentPrompt = prompts[round] ?? null;
+
+  const nextRound = () => {
+    if (round + 1 >= totalRounds) {
+      onDone();
+    } else {
+      setRound((r) => r + 1);
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.rendererScroll}>
       <Eyebrow label="DESAFÍO" />
-      <Text style={styles.activityTitle}>
-        {/* title comes from parent, we just render content */}
-      </Text>
-      <Text style={styles.promptText}>{content.prompt}</Text>
+      {currentPrompt ? (
+        <>
+          <Text style={styles.roundBadge}>TURNO {round + 1} / {totalRounds}</Text>
+          <Text style={styles.questionText}>{currentPrompt}</Text>
+          <Text style={styles.secondaryHint}>{content.prompt}</Text>
+        </>
+      ) : (
+        <Text style={styles.promptText}>{content.prompt}</Text>
+      )}
       {content.winCondition && (
         <View style={styles.winBox}>
           <Text style={styles.winText}>🏆 {content.winCondition}</Text>
@@ -128,7 +147,14 @@ function ChallengeRenderer({
             </Text>
           </Pressable>
         ))}
-      <ContinueBtn onPress={onDone} />
+      {currentPrompt ? (
+        <ContinueBtn
+          label={round + 1 >= totalRounds ? "TERMINAMOS" : "SIGUIENTE →"}
+          onPress={nextRound}
+        />
+      ) : (
+        <ContinueBtn onPress={onDone} />
+      )}
     </ScrollView>
   );
 }
