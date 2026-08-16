@@ -133,9 +133,17 @@ function ChallengeRenderer({
   );
 }
 
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function GameRenderer({
   content,
-  activity,
   onDone,
 }: {
   content: GameContent;
@@ -144,15 +152,43 @@ function GameRenderer({
 }) {
   const [scores, setScores] = useState([0, 0]);
   const [started, setStarted] = useState(false);
+  const [round, setRound] = useState(0);
+  const totalRounds = content.rounds ?? 10;
+  const [questions] = useState<string[]>(() =>
+    content.questions ? shuffle(content.questions).slice(0, totalRounds) : []
+  );
+  const currentQuestion = questions[round] ?? null;
+
+  const nextRound = () => {
+    if (round + 1 >= totalRounds) {
+      onDone();
+    } else {
+      setRound((r) => r + 1);
+    }
+  };
+
+  if (!started) {
+    return (
+      <ScrollView contentContainerStyle={styles.rendererScroll}>
+        <Eyebrow label="JUEGO" />
+        <Text style={styles.promptText}>{content.rules}</Text>
+        {content.turnInstructions && (
+          <Text style={styles.secondaryHint}>{content.turnInstructions}</Text>
+        )}
+        <ContinueBtn label="EMPEZAMOS" onPress={() => setStarted(true)} />
+      </ScrollView>
+    );
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.rendererScroll}>
-      <Eyebrow label="JUEGO" />
-      <Text style={styles.promptText}>{content.rules}</Text>
-      {content.turnInstructions && (
-        <Text style={styles.secondaryHint}>{content.turnInstructions}</Text>
+      <Text style={styles.roundBadge}>RONDA {round + 1} / {totalRounds}</Text>
+      {currentQuestion ? (
+        <Text style={styles.questionText}>{currentQuestion}</Text>
+      ) : (
+        <Text style={styles.promptText}>{content.rules}</Text>
       )}
-      {content.trackScore && started && (
+      {content.trackScore && (
         <View style={styles.scoreboard}>
           <View style={styles.scoreCol}>
             <Text style={styles.scoreLabel}>ÉL / ELLA</Text>
@@ -193,11 +229,10 @@ function GameRenderer({
           </View>
         </View>
       )}
-      {!started ? (
-        <ContinueBtn label="EMPEZAMOS" onPress={() => setStarted(true)} />
-      ) : (
-        <ContinueBtn label="TERMINAMOS" onPress={onDone} />
-      )}
+      <ContinueBtn
+        label={round + 1 >= totalRounds ? "TERMINAMOS" : "SIGUIENTE RONDA →"}
+        onPress={nextRound}
+      />
     </ScrollView>
   );
 }
@@ -714,6 +749,13 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   // Scoreboard
+  roundBadge: {
+    fontFamily: "Manrope_700Bold",
+    fontSize: 11,
+    letterSpacing: 2.5,
+    color: Colors.primary,
+    marginBottom: 4,
+  },
   scoreboard: {
     flexDirection: "row",
     backgroundColor: Colors.surface,

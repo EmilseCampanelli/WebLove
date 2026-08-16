@@ -53,6 +53,7 @@ export interface GameContent {
   rounds?: number;
   trackScore: boolean;
   turnInstructions?: string;
+  questions?: string[];
 }
 
 export interface StepsContent {
@@ -686,10 +687,48 @@ export const ACTIVITY_POOL: Activity[] = [
     content: {
       kind: "game",
       rules:
-        "Por turnos, uno hace una pregunta de cualquier tema que se le ocurra. Si el otro acierta, punto para él. Si no, punto para quien preguntó. 10 rondas.",
+        "Por turnos, uno hace una pregunta. Si el otro acierta, punto para él. Si no, punto para quien preguntó. 10 rondas.",
       rounds: 10,
       trackScore: true,
-      turnInstructions: "Pregunten cualquier cosa. El que más sabe, gana.",
+      turnInstructions: "Lean la pregunta en voz alta. El que más sabe, gana.",
+      questions: [
+        "¿Cuál es el río más largo del mundo?",
+        "¿En qué año llegó el hombre a la Luna?",
+        "¿Cuántos huesos tiene el cuerpo humano?",
+        "¿Cuál es la capital de Australia?",
+        "¿Quién pintó La Última Cena?",
+        "¿Cuántos planetas tiene el sistema solar?",
+        "¿Cuál es el elemento más abundante en la Tierra?",
+        "¿En qué país está Machu Picchu?",
+        "¿Quién escribió Cien años de soledad?",
+        "¿Cuánto mide un metro en centímetros?",
+        "¿Cuál es el animal terrestre más rápido?",
+        "¿De qué país es originaria la pizza?",
+        "¿Cuántos colores tiene el arcoíris?",
+        "¿Qué idioma hablan en Brasil?",
+        "¿Cuál es el océano más grande?",
+        "¿Cuántos lados tiene un hexágono?",
+        "¿Cuál es la montaña más alta del mundo?",
+        "¿En qué continente está Egipto?",
+        "¿Qué instrumento toca un pianista?",
+        "¿Cuántos minutos tiene una hora?",
+        // quien conoce más al otro
+        "¿Cuál es la comida favorita de tu pareja?",
+        "¿En qué trabaja o estudia la persona que tenés al lado?",
+        "¿Cuál es el mayor miedo de tu pareja?",
+        "¿Qué serie o película podría ver tu pareja en loop?",
+        "¿Cómo se llama el mejor amigo o amiga de tu pareja?",
+        "¿Qué haría tu pareja con un día libre sin planes?",
+        "¿Cuál es el recuerdo favorito de tu pareja de la infancia?",
+        "¿Cuál es el destino de viaje soñado de tu pareja?",
+        "¿Qué la/lo pone de buen humor instantáneamente?",
+        "¿Qué hábito de tu pareja te parece adorable?",
+        "¿Cuándo conociste a tu pareja, qué fue lo primero que te llamó la atención?",
+        "¿Cuál es la canción que más identifica a tu pareja?",
+        "¿Qué superpoder elegiría tu pareja?",
+        "¿Qué haría tu pareja si ganara la lotería?",
+        "¿Cuál es la mayor fortaleza de tu pareja según vos?",
+      ],
     },
   },
 
