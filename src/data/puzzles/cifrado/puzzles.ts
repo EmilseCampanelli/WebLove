@@ -252,6 +252,11 @@ const cf9: CifradoPuzzle = {
 };
 
 // ─── PUZZLE 10 (nuevo): Atbash + César (dos pasos) — experto-01 ──────────────
+// Verificación:
+//   Original: VIKTOR MOSS
+//   Paso 1 Atbash: V→E,I→R,K→P,T→G,O→L,R→I | M→N,O→L,S→H,S→H → ERPGLI NLHH
+//   Paso 2 César+3: E→H,R→U,P→S,G→J,L→O,I→L | N→Q,L→O,H→K,H→K → HUSJOL QOKK
+//   Descifrado: César−3 HUSJOL→ERPGLI QOKK→NLHH | Atbash ERPGLI→VIKTOR NLHH→MOSS ✓
 const cf10: CifradoPuzzle = {
   id: "cifrado-experto-01",
   category: "cifrado",
@@ -259,23 +264,23 @@ const cf10: CifradoPuzzle = {
   description: "El mensaje fue cifrado dos veces: primero Atbash, luego César +3. Necesitás invertir ambas operaciones en el orden correcto.",
   difficulty: "experto",
   estimatedMinutes: 25,
-  story: "El archivo secreto más buscado por la Interpol llegó como una nota anónima al despacho del detective. El informante era conocido por usar siempre doble cifrado: primero invertía el alfabeto (Atbash) y luego desplazaba cada letra 3 posiciones (César +3). Para leer el mensaje hay que hacer exactamente lo opuesto en orden inverso.",
-  instructions: "El mensaje fue cifrado así: (1) Atbash, luego (2) César +3.\nPara descifrar debés aplicar: (1) César −3 primero, luego (2) Atbash.\n\nPaso 1 — César −3: desplazá cada letra 3 posiciones hacia atrás (D→A, E→B, F→C, A→X, B→Y, C→Z).\nPaso 2 — Atbash: invertí el alfabeto (A↔Z, B↔Y, C↔X...).\n\nEscribí el nombre completo de la fuente.",
+  story: "El archivo secreto más buscado por la Interpol llegó como una nota anónima al despacho del detective. El informante era conocido por usar siempre doble cifrado: primero invertía el alfabeto (Atbash) y luego desplazaba cada letra 3 posiciones hacia adelante (César +3). Para leer el mensaje hay que hacer exactamente lo opuesto en orden inverso.",
+  instructions: "El mensaje fue cifrado así: Paso 1 → Atbash, Paso 2 → César +3.\nPara descifrar debés hacer lo contrario en orden inverso:\n\n  Paso 1 — César −3: desplazá cada letra 3 posiciones hacia atrás.\n    D→A  E→B  F→C  G→D  H→E  I→F  J→G  K→H  L→I  M→J\n    N→K  O→L  P→M  Q→N  R→O  S→P  T→Q  U→R  V→S  W→T\n    X→U  Y→V  Z→W  A→X  B→Y  C→Z\n\n  Paso 2 — Atbash: reemplazá cada letra por su opuesta.\n    A↔Z  B↔Y  C↔X  D↔W  E↔V  F↔U  G↔T  H↔S  I↔R\n    J↔Q  K↔P  L↔O  M↔N  (y viceversa)\n\nEscribí el nombre completo del agente infiltrado.",
   cipherName: "Doble cifrado: Atbash + César +3",
-  cipherDescription: "CIFRADO (lo que hizo el espía):\n  Paso 1: Atbash (A↔Z, B↔Y, C↔X...)\n  Paso 2: César +3 (A→D, B→E, Z→C)\n\nDESCIFRADO (lo que hacés vos):\n  Paso 1: César −3 (D→A, E→B, A→X, B→Y, C→Z)\n  Paso 2: Atbash (A↔Z, B↔Y, C↔X...)\n\nCésar −3:\nA→X  B→Y  C→Z  D→A  E→B  F→C  G→D  H→E  I→F  J→G  K→H  L→I  M→J\nN→K  O→L  P→M  Q→N  R→O  S→P  T→Q  U→R  V→S  W→T  X→U  Y→V  Z→W\n\nAtbash:\nA↔Z  B↔Y  C↔X  D↔W  E↔V  F↔U  G↔T  H↔S  I↔R  J↔Q  K↔P  L↔O  M↔N",
-  encodedMessage: "NRIBHQ YBKVI",
+  cipherDescription: "CIFRADO (lo que hizo el espía):\n  1. Atbash: A↔Z, B↔Y, C↔X... (invierte el alfabeto)\n  2. César +3: A→D, B→E, ..., X→A, Y→B, Z→C\n\nDESCIFRADO (lo que hacés vos — pasos invertidos):\n  1. César −3: D→A, E→B, F→C, ..., A→X, B→Y, C→Z\n  2. Atbash: A↔Z, B↔Y, C↔X...",
+  encodedMessage: "HUSJOL QOKK",
   decodingKey: {
-    "César-3": "D→A, E→B, F→C, G→D, H→E, I→F, J→G, K→H, L→I, M→J, N→K, O→L, P→M, Q→N, R→O, S→P, T→Q, U→R, V→S, W→T, X→U, Y→V, Z→W, A→X, B→Y, C→Z",
-    "Atbash": "A↔Z, B↔Y, C↔X, D↔W, E↔V, F↔U, G↔T, H↔S, I↔R, J↔Q, K↔P, L↔O, M↔N"
+    "Paso 1 César −3": "D→A, E→B, F→C, G→D, H→E, I→F, J→G, K→H, L→I, M→J, N→K, O→L, P→M, Q→N, R→O, S→P, T→Q, U→R, V→S, W→T, X→U, Y→V, Z→W, A→X, B→Y, C→Z",
+    "Paso 2 Atbash": "A↔Z, B↔Y, C↔X, D↔W, E↔V, F↔U, G↔T, H↔S, I↔R, J↔Q, K↔P, L↔O, M↔N"
   },
-  answer: "ALEKSY WANES",
-  answerDisplay: "ALEKSY WANES",
+  answer: "VIKTOR MOSS",
+  answerDisplay: "VIKTOR MOSS",
   hints: [
-    { level: 1, text: "Hay dos operaciones. Primero aplicá César −3 a todo el mensaje, luego aplicá Atbash al resultado." },
-    { level: 2, text: "Después de César −3: NRIBHQ→KOFEX N... Intentá letra por letra: N−3=K, R−3=O, I−3=F, B−3=Y, H−3=E, Q−3=N → KOFYEN. Luego Atbash: K→P... espera, revisá con la pista 3." },
-    { level: 3, text: "César −3: N→K, R→O, I→F, B→Y, H→E, Q→N → KOFYEN | Y→V, B→Y, K→H, V→S, I→F → YVHSF... → Atbash de KOFYEN: K→P, O→L, F→U, Y→B, E→V, N→M = PLUBVM? Revisá: la respuesta final es ALEKSY WANES." },
+    { level: 1, text: "Son dos pasos en orden. Primero aplicá César −3 a todas las letras. Recién después aplicá Atbash al resultado." },
+    { level: 2, text: "César −3 sobre HUSJOL: H→E, U→R, S→P, J→G, O→L, L→I → ERPGLI. Ahora aplicá Atbash a ERPGLI." },
+    { level: 3, text: "César −3: HUSJOL→ERPGLI y QOKK→NLHH. Atbash: ERPGLI→VIKTOR y NLHH→MOSS. Respuesta: VIKTOR MOSS." },
   ],
-  solutionExplanation: "Paso 1 César −3: N→K, R→O, I→F, B→Y, H→E, Q→N → KOFYEN | Y→V, B→Y, K→H, V→S, I→F, R→O → VYHSFO. Paso 2 Atbash sobre cada resultado: KOFYEN→PLOYBM... El proceso completo da ALEKSY WANES, el nombre del doble agente infiltrado.",
+  solutionExplanation: "Paso 1 César −3: H→E, U→R, S→P, J→G, O→L, L→I = ERPGLI | Q→N, O→L, K→H, K→H = NLHH. Paso 2 Atbash: E→V, R→I, P→K, G→T, L→O, I→R = VIKTOR | N→M, L→O, H→S, H→S = MOSS. El doble agente infiltrado era Viktor Moss.",
 };
 
 export const CIFRADO_PUZZLES: CifradoPuzzle[] = [
