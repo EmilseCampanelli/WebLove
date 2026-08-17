@@ -153,6 +153,25 @@ export default function HomeScreen() {
             <Text style={styles.nightBtnArrow}>›</Text>
           </Pressable>
 
+          {/* 🧠 JUEGOS section */}
+          <Pressable
+            style={({ pressed }) => [styles.nightBtn, pressed && styles.nightBtnPressed, styles.juegosBtn]}
+            onPress={() => router.push("/puzzles" as never)}
+            accessibilityRole="button"
+            accessibilityLabel="Juegos de misterio"
+          >
+            <View style={styles.nightBtnContent}>
+              <Text style={styles.nightBtnEmoji}>🧠</Text>
+              <View style={styles.nightBtnText}>
+                <Text style={styles.nightBtnTitle}>JUEGOS DE MISTERIO</Text>
+                <Text style={styles.nightBtnDesc}>
+                  Puzzles de asesinato. Resuelvan el caso juntos.
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.nightBtnArrow}>›</Text>
+          </Pressable>
+
           {/* Guided experiences horizontal scroll */}
           <View style={styles.guidedSection}>
             <Text style={styles.guidedLabel}>NOCHES GUIADAS</Text>
@@ -335,6 +354,11 @@ const styles = StyleSheet.create({
   nightBtnArrow: {
     fontSize: 22,
     color: Colors.primary,
+  },
+  juegosBtn: {
+    marginTop: 10,
+    borderColor: Colors.accent + "44",
+    backgroundColor: Colors.accent + "12",
   },
   guidedSection: {
     gap: 12,
