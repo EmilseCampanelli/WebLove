@@ -6,8 +6,8 @@ import {
   ScrollView,
   StyleSheet,
   Modal,
-  SafeAreaView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, router } from "expo-router";
 import { getMurdokuPuzzle } from "../../../src/data/puzzles/murdoku/puzzles";
 import { MurdokuBoard } from "../../../src/components/puzzles/MurdokuBoard";
