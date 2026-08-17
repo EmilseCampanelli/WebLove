@@ -187,8 +187,10 @@ export default function MurdokuPlayerScreen() {
             onPress={handleVerify}
             disabled={!allPlaced}
           >
-            <Text style={styles.verifyBtnLabel}>
-              {allPlaced ? "VERIFICAR UBICACIONES" : `FALTAN ${puzzle.suspects.filter((s) => !placements[s.id]).length} POR UBICAR`}
+            <Text style={[styles.verifyBtnLabel, !allPlaced && styles.verifyBtnLabelDisabled]}>
+              {allPlaced
+                ? "🔍 VERIFICAR UBICACIONES"
+                : `⏳ FALTAN ${puzzle.suspects.filter((s) => !placements[s.id]).length} POR UBICAR`}
             </Text>
           </Pressable>
         )}
@@ -409,6 +411,11 @@ const styles = StyleSheet.create({
   },
   verifyBtnDisabled: {
     backgroundColor: Colors.surface,
+    borderWidth: 1.5,
+    borderColor: Colors.border,
+  },
+  verifyBtnLabelDisabled: {
+    color: Colors.textSecondary,
   },
   verifyBtnPressed: {
     opacity: 0.8,
