@@ -235,7 +235,11 @@ const cf9: CifradoPuzzle = {
   instructions: "La palabra clave es DRAGON. El alfabeto cifrado comienza con las letras únicas de DRAGON (en orden de aparición) y luego continúa con las letras restantes del abecedario (en orden alfabético, saltando las ya usadas).\n\nAlf. normal: A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\nAlf. cifrado: D R A G O N B C E F H I J K L M P Q S T U V W X Y Z\n\nPara descifrar, encontrá cada letra del mensaje en el alfabeto cifrado y tomá la letra normal correspondiente.",
   cipherName: "Cifrado de palabra clave (DRAGON)",
   cipherDescription: "Alfabeto normal:  A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\nAlfabeto cifrado: D R A G O N B C E F H I J K L M P Q S T U V W X Y Z\n\nPara descifrar: buscá la letra del mensaje en el alfabeto cifrado → su posición indica la letra normal.",
-  encodedMessage: "SDLCDR RLJODS",
+  // Verificación: STEFAN BLONDS cifrado con alf. DRAGON:
+  //   Encode: S→S,T→T,E→O,F→N,A→D,N→K | B→R,L→I,O→L,N→K,D→G,S→S
+  //   Cifrado: STONDK RILKGS
+  //   Decode: S→S,T→T,O→E,N→F,D→A,K→N | R→B,I→L,L→O,K→N,G→D,S→S → STEFAN BLONDS ✓
+  encodedMessage: "STONDK RILKGS",
   decodingKey: {
     "D":"A","R":"B","A":"C","G":"D","O":"E","N":"F","B":"G","C":"H","E":"I","F":"J",
     "H":"K","I":"L","J":"M","K":"N","L":"O","M":"P","P":"Q","Q":"R","S":"S","T":"T",
@@ -244,11 +248,11 @@ const cf9: CifradoPuzzle = {
   answer: "STEFAN BLONDS",
   answerDisplay: "STEFAN BLONDS",
   hints: [
-    { level: 1, text: "El alfabeto cifrado empieza con D-R-A-G-O-N (la clave), luego B-C-E-F-H-I... (las letras restantes en orden)." },
-    { level: 2, text: "S en el alfabeto cifrado ocupa la posición 19, que en el normal es S. R→B, L→O, C→H, D→A..." },
-    { level: 3, text: "S=S, D=A, L=O, C=H... SDLCDR = STEFAN. RLJODS = BLONDS." },
+    { level: 1, text: "El alfabeto cifrado empieza con D-R-A-G-O-N (la clave), luego las restantes en orden: B,C,E,F,H,I,J,K,L,M,P,Q,S,T... Para descifrar, encontrá cada letra del mensaje en el alfabeto cifrado y tomá su equivalente normal." },
+    { level: 2, text: "Las letras S y T no están en DRAGON, así que se codifican como S y T. O→E, N→F, D→A, K→N..." },
+    { level: 3, text: "STONDK: S→S, T→T, O→E, N→F, D→A, K→N = STEFAN. RILKGS: R→B, I→L, L→O, K→N, G→D, S→S = BLONDS." },
   ],
-  solutionExplanation: "Con el alfabeto cifrado DRAGON: S→S, D→A, L→O (pos 15 del cifrado = O normal? No: L está en posición 15 del cifrado → O en normal). Descifrando: SDLCDR=STEFAN, RLJODS=BLONDS. El contacto del coronel era Stefan Blonds.",
+  solutionExplanation: "Descifrado con alf. DRAGON: S→S, T→T, O→E, N→F, D→A, K→N = STEFAN | R→B, I→L, L→O, K→N, G→D, S→S = BLONDS. El contacto del coronel era Stefan Blonds.",
 };
 
 // ─── PUZZLE 10 (nuevo): Atbash + César (dos pasos) — experto-01 ──────────────
