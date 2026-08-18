@@ -90,7 +90,237 @@ const c3: ContradictionPuzzle = {
   contradictionExplanation: "El cuarto de costura da al jardín trasero (norte). El portón delantero está en el sur. Imposible verlo desde allí.",
 };
 
-export const CONTRADICCION_PUZZLES: ContradictionPuzzle[] = [c1, c2, c3];
+// ─── NUEVOS PUZZLES ────────────────────────────────────────────────────────────
+
+const c4: ContradictionPuzzle = {
+  id: "contra-facil-02",
+  category: "contradiccion",
+  title: "La noche del paraguas",
+  description: "Valentina dice que fue caminando bajo un cielo despejado. Su paraguas cuenta otra historia.",
+  difficulty: "facil",
+  estimatedMinutes: 5,
+  story: "Valentina Ruiz afirma haber caminado tranquilamente hasta el departamento de Marcelo la noche del crimen. Su declaración es corta y segura. Demasiado segura para alguien que mezcló dos detalles que no pueden convivir.",
+  instructions: "Leé la declaración de Valentina. Encontrá las dos frases que se contradicen entre sí.",
+  hints: [
+    { level: 1, text: "Prestá atención al clima que describe y a los objetos que menciona." },
+    { level: 2, text: "¿Para qué sirve un paraguas? ¿Qué condición tiene que haber para que esté mojado?" },
+    { level: 3, text: 'Dice que no necesitó el paraguas porque el cielo estaba despejado, pero también que lo apoyó mojado al llegar.' },
+  ],
+  solutionExplanation: 'Valentina afirma que el cielo estaba completamente despejado y que no necesitó el paraguas en ningún momento. Sin embargo, al llegar describe el paraguas como mojado. Un paraguas no se moja solo si no llueve.',
+  narrative: "",
+  sentences: [
+    { id: "s1", text: "Esa noche salí del trabajo a las 19:30. El cielo estaba completamente despejado, sin una sola nube.", isPartOfContradiction: false },
+    { id: "s2", text: "Fui caminando hasta el departamento de Marcelo, que me queda a unas diez cuadras por la avenida.", isPartOfContradiction: false },
+    { id: "s3", text: "Llevaba el paraguas en la mano por costumbre, pero no lo necesité en ningún momento.", isPartOfContradiction: true },
+    { id: "s4", text: "Llegué a las 20:00 y subí directo al cuarto piso.", isPartOfContradiction: false },
+    { id: "s5", text: "Marcelo me abrió la puerta. Yo apoyé mi paraguas mojado en el paragüero del pasillo.", isPartOfContradiction: true },
+    { id: "s6", text: "Estuvimos charlando de negocios hasta pasadas las 22:00.", isPartOfContradiction: false },
+    { id: "s7", text: "Me despedí, bajé por las escaleras y volví a casa caminando.", isPartOfContradiction: false },
+  ],
+  contradictionIds: ["s3", "s5"],
+  contradictionExplanation: 'Si el cielo estaba despejado y no usó el paraguas, ¿por qué estaba mojado al llegar?',
+};
+
+const c5: ContradictionPuzzle = {
+  id: "contra-facil-03",
+  category: "contradiccion",
+  title: "El gol del miércoles",
+  description: "Tomás dice que pasó la noche solo en casa. Pero su relato menciona a alguien más.",
+  difficulty: "facil",
+  estimatedMinutes: 5,
+  story: "Tomás Pereyra insiste en que el miércoles a la noche no salió de su departamento y no estuvo con nadie. El partido de fútbol era su coartada. Pero en un descuido, metió un detalle que lo desmiente.",
+  instructions: "Leé la declaración de Tomás. Buscá las dos frases que se contradicen.",
+  hints: [
+    { level: 1, text: "¿Con quién dice Tomás que estuvo esa noche?" },
+    { level: 2, text: "Fijate en la frase donde festeja el gol. ¿Quién está ahí?" },
+    { level: 3, text: 'Dice que estaba solo en su departamento, pero luego menciona que festejó con su vecino Óscar, que estaba con él.' },
+  ],
+  solutionExplanation: 'Tomás afirma haber estado completamente solo en su departamento. Sin embargo, al describir el festejo del gol menciona a su vecino Óscar, que "estaba ahí con él". Ambas afirmaciones no pueden ser ciertas al mismo tiempo.',
+  narrative: "",
+  sentences: [
+    { id: "s1", text: "El miércoles a la noche no salí de casa para nada. Estuve encerrado todo el tiempo.", isPartOfContradiction: false },
+    { id: "s2", text: "Me quedé viendo el partido de fútbol por televisión, solo en mi departamento.", isPartOfContradiction: true },
+    { id: "s3", text: "Pedí una pizza a las 20:00 y comí mientras miraba el primer tiempo.", isPartOfContradiction: false },
+    { id: "s4", text: "El partido terminó dos a uno, con el segundo gol en el segundo tiempo.", isPartOfContradiction: false },
+    { id: "s5", text: "Cuando Ramírez metió ese gol, festejé con mi vecino Óscar que estaba ahí conmigo.", isPartOfContradiction: true },
+    { id: "s6", text: "Después del partido me fui a dormir. No salí en toda la noche, le juro.", isPartOfContradiction: false },
+    { id: "s7", text: "A la mañana siguiente me enteré por el noticiero de lo que había pasado.", isPartOfContradiction: false },
+  ],
+  contradictionIds: ["s2", "s5"],
+  contradictionExplanation: 'Dice que estaba solo en su departamento, pero menciona que su vecino Óscar "estaba ahí con él" cuando festejó el gol.',
+};
+
+const c6: ContradictionPuzzle = {
+  id: "contra-medio-02",
+  category: "contradiccion",
+  title: "La cicatriz de abril",
+  description: "Dice que no vio a la víctima en ocho meses. Pero conoce una herida que ocurrió cuatro meses después.",
+  difficulty: "medio",
+  estimatedMinutes: 8,
+  story: "Gerardo Ibáñez asegura no haber tenido contacto con Horacio desde la cena de Nochebuena. Sin embargo, al identificar el cuerpo, revela un detalle que solo alguien que lo vio después podría saber.",
+  instructions: "Leé la declaración de Gerardo. Hay dos frases que, combinadas, no pueden ser ciertas al mismo tiempo.",
+  hints: [
+    { level: 1, text: "Prestá atención a cuándo dice haber visto por última vez a la víctima y a los detalles que describe del cuerpo." },
+    { level: 2, text: "¿Cuándo ocurrió el accidente que menciona? ¿Podría saberlo si no lo vio desde diciembre?" },
+    { level: 3, text: 'Si no tuvo contacto desde la Nochebuena y el accidente fue en abril, ¿cómo sabe que la cicatriz es de ese accidente?' },
+  ],
+  solutionExplanation: 'Gerardo dice no haber tenido ningún contacto con Horacio desde la Nochebuena (diciembre). Sin embargo, afirma con certeza que la cicatriz en su mano es de un accidente ocurrido en abril —cuatro meses después de su supuesto último contacto. Para saber eso, tendría que haberlo visto después de abril.',
+  narrative: "",
+  sentences: [
+    { id: "s1", text: "La última vez que vi a Horacio fue en la cena de Nochebuena, hace más de ocho meses.", isPartOfContradiction: false },
+    { id: "s2", text: "Desde entonces no tuvimos ningún tipo de contacto. Ni llamadas, ni mensajes, ni nos cruzamos.", isPartOfContradiction: true },
+    { id: "s3", text: "Sé que andaba mal económicamente, pero me enteré por comentarios de conocidos en común.", isPartOfContradiction: false },
+    { id: "s4", text: "No frecuentamos los mismos lugares, así que era muy difícil que nos cruzáramos.", isPartOfContradiction: false },
+    { id: "s5", text: "Cuando la policía me llamó para identificar el cuerpo, fui de inmediato.", isPartOfContradiction: false },
+    { id: "s6", text: "Reconocí a Horacio por la cicatriz que tiene en el dorso de la mano derecha.", isPartOfContradiction: false },
+    { id: "s7", text: "Esa cicatriz la tiene desde el accidente que tuvo en abril, cuando le cayó una herramienta encima en el taller.", isPartOfContradiction: true },
+    { id: "s8", text: "Me pareció que había adelgazado bastante. Firmé los papeles y volví a casa.", isPartOfContradiction: false },
+    { id: "s9", text: "Espero que encuentren al responsable cuanto antes.", isPartOfContradiction: false },
+  ],
+  contradictionIds: ["s2", "s7"],
+  contradictionExplanation: 'Sin contacto desde diciembre, no puede saber que la cicatriz es de un accidente ocurrido en abril.',
+};
+
+const c7: ContradictionPuzzle = {
+  id: "contra-medio-03",
+  category: "contradiccion",
+  title: "El octavo piso",
+  description: "Dice que subió en ascensor. Después confiesa que sabía que el ascensor no funcionaba.",
+  difficulty: "medio",
+  estimatedMinutes: 9,
+  story: "Inés Molina asegura haber visitado a Claudia en su departamento del octavo piso el lunes por la tarde. Todo en su relato parece ordenado, hasta que el encargado del edificio aparece en la historia.",
+  instructions: "Leé la declaración de Inés. Encontrá las dos frases que se contradicen.",
+  hints: [
+    { level: 1, text: "Prestá atención a cómo subió al departamento y a cómo bajó." },
+    { level: 2, text: "¿Qué le dice el encargado sobre el ascensor? ¿Y qué responde ella?" },
+    { level: 3, text: 'Dice haber subido en ascensor, pero después confirma que sabía que el ascensor llevaba toda la semana roto.' },
+  ],
+  solutionExplanation: 'Inés afirma haber subido al octavo piso en ascensor. Pero cuando el encargado le comenta que el ascensor lleva toda la semana sin funcionar, ella responde que ya lo sabía y que "por eso también había subido por las escaleras". Esas dos afirmaciones son incompatibles.',
+  narrative: "",
+  sentences: [
+    { id: "s1", text: "El lunes fui a visitar a Claudia a su departamento en el octavo piso, a media tarde.", isPartOfContradiction: false },
+    { id: "s2", text: "Subí en el ascensor hasta el octavo, llamé al timbre y Claudia me abrió enseguida.", isPartOfContradiction: true },
+    { id: "s3", text: "Tomamos un té, charlamos un rato largo. Fue una tarde tranquila, sin nada raro.", isPartOfContradiction: false },
+    { id: "s4", text: "Cuando me fui, bajé por las escaleras porque quería estirar un poco las piernas.", isPartOfContradiction: false },
+    { id: "s5", text: "En la planta baja me crucé con el encargado, que me dijo que el ascensor llevaba toda la semana sin funcionar.", isPartOfContradiction: false },
+    { id: "s6", text: "Le respondí que sí, que ya lo sabía, que por eso había subido también por las escaleras.", isPartOfContradiction: true },
+    { id: "s7", text: "Me despedí del encargado y salí a la calle.", isPartOfContradiction: false },
+    { id: "s8", text: "Esa fue la última vez que vi a Claudia con vida.", isPartOfContradiction: false },
+  ],
+  contradictionIds: ["s2", "s6"],
+  contradictionExplanation: 'Dice haber subido en ascensor (s2) pero luego confirma que sabía que el ascensor estaba roto y que había subido por las escaleras (s6).',
+};
+
+const c8: ContradictionPuzzle = {
+  id: "contra-dificil-02",
+  category: "contradiccion",
+  title: "El cuarteto sin piano",
+  description: "Fue a un concierto de cuerdas. Pero al recordarlo, menciona a un pianista extraordinario.",
+  difficulty: "dificil",
+  estimatedMinutes: 12,
+  story: "Beatriz Salinas asegura haber pasado la noche del viernes en el Conservatorio Municipal asistiendo a un concierto. Su coartada parece sólida, con detalles precisos. Pero hay un detalle musical que la delata.",
+  instructions: "Leé el relato de Beatriz con cuidado. Dos fragmentos son lógicamente incompatibles.",
+  hints: [
+    { level: 1, text: "Prestá atención al tipo de concierto que describe al principio." },
+    { level: 2, text: "¿Qué instrumentos forman un cuarteto de cuerdas? ¿Hay piano en esa formación?" },
+    { level: 3, text: 'Un cuarteto de cuerdas no tiene pianista. Pero Beatriz menciona uno al recordar la actuación.' },
+  ],
+  solutionExplanation: 'Beatriz describe el programa como un cuarteto de cuerdas: dos violines, una viola y un cello. Esa formación no incluye piano ni pianista. Sin embargo, al evocar la noche, menciona que el pianista estuvo extraordinario. Alguien que realmente estuvo en ese concierto no cometería ese error.',
+  narrative: "",
+  sentences: [
+    { id: "s1", text: "Ese viernes tenía entradas para el concierto en el Conservatorio Municipal.", isPartOfContradiction: false },
+    { id: "s2", text: "El programa era un cuarteto de cuerdas: dos violines, una viola y un cello.", isPartOfContradiction: true },
+    { id: "s3", text: "Llegué diez minutos antes del inicio y busqué mi asiento en la platea.", isPartOfContradiction: false },
+    { id: "s4", text: "El concierto arrancó puntualmente a las 20:30 con una obra de Haydn.", isPartOfContradiction: false },
+    { id: "s5", text: "Durante el primer intermedio fui al bar y tomé un café. Me crucé con la señora Peralta.", isPartOfContradiction: false },
+    { id: "s6", text: "En el segundo tiempo ejecutaron una obra de Brahms que me pareció absolutamente magnífica.", isPartOfContradiction: false },
+    { id: "s7", text: "Al terminar aplaudí de pie. Fue una noche muy especial, de esas que no se olvidan.", isPartOfContradiction: false },
+    { id: "s8", text: "El pianista estuvo sencillamente extraordinario. Nunca escuché un Chopin ejecutado con tanta sensibilidad.", isPartOfContradiction: true },
+    { id: "s9", text: "Salí del Conservatorio alrededor de las 23:00 y tomé un taxi a casa.", isPartOfContradiction: false },
+    { id: "s10", text: "Le conté todo a mi marido cuando llegué. Él sabe que soy una fanática de la música de cámara.", isPartOfContradiction: false },
+  ],
+  contradictionIds: ["s2", "s8"],
+  contradictionExplanation: 'Un cuarteto de cuerdas no tiene piano ni pianista. Mencionar uno revela que no estuvo en ese concierto.',
+};
+
+const c9: ContradictionPuzzle = {
+  id: "contra-dificil-03",
+  category: "contradiccion",
+  title: "La ventana del sur",
+  description: "Describe una habitación bañada por el sol de la tarde. Pero las ventanas miran al sur.",
+  difficulty: "dificil",
+  estimatedMinutes: 13,
+  story: "Rodrigo Ferrante dice haber estado en su habitación de hotel durante toda la tarde del jueves. Describe la luz, saca una selfie, recuerda la iluminación con precisión. Pero una orientación geográfica lo traiciona.",
+  instructions: "Leé el relato de Rodrigo. Hay dos fragmentos que no pueden ser ciertos al mismo tiempo. Necesitás combinar al menos tres datos para encontrarlos.",
+  hints: [
+    { level: 1, text: "Prestá atención a la orientación de las ventanas y a la hora del día." },
+    { level: 2, text: "En Argentina, ¿por qué lado entra el sol de la tarde? ¿Coincide con las ventanas que describe?" },
+    { level: 3, text: 'En el hemisferio sur, el sol de la tarde entra por ventanas orientadas al norte. Una habitación con ventanas al sur no tendría luz solar directa a las 15:00.' },
+  ],
+  solutionExplanation: 'En Argentina (hemisferio sur), el sol al mediodía y por la tarde se ubica hacia el norte. Por eso, la luz solar directa entra a través de ventanas orientadas al norte, no al sur. Rodrigo describe una habitación con ventanas al sur (s4) y al mismo tiempo dice que a las 15:00 la luz solar entraba directo por esa ventana (s7). Eso es físicamente imposible.',
+  narrative: "",
+  sentences: [
+    { id: "s1", text: "El jueves por la tarde estaba en la habitación del hotel, haciendo tiempo hasta la reunión.", isPartOfContradiction: false },
+    { id: "s2", text: "Saqué el celular y me tomé una selfie frente al espejo del baño para mandarle foto a mi mujer.", isPartOfContradiction: false },
+    { id: "s3", text: "La habitación era amplia y tranquila. Me había tocado una muy buena.", isPartOfContradiction: false },
+    { id: "s4", text: "Tenía ventanas al sur que daban a un jardín interno muy agradable.", isPartOfContradiction: true },
+    { id: "s5", text: "Eran las 15:00 y hacía un día muy soleado afuera.", isPartOfContradiction: false },
+    { id: "s6", text: "En esta época del año el sol de la tarde entra fuerte por las ventanas del norte, algo que siempre agradezco.", isPartOfContradiction: false },
+    { id: "s7", text: "La iluminación de la selfie salió perfecta, con la luz solar entrando directo por la ventana de frente a mí.", isPartOfContradiction: true },
+    { id: "s8", text: "Bajé al lobby a las 16:30 a esperar a mis socios para la reunión.", isPartOfContradiction: false },
+    { id: "s9", text: "La reunión duró hasta las 19:00 y después cené con ellos en el restaurante del hotel.", isPartOfContradiction: false },
+    { id: "s10", text: "No salí a la calle en ningún momento durante toda esa tarde.", isPartOfContradiction: false },
+  ],
+  contradictionIds: ["s4", "s7"],
+  contradictionExplanation: 'Ventanas al sur no reciben sol directo a las 15:00 en Argentina: el sol de la tarde ilumina desde el norte.',
+};
+
+const c10: ContradictionPuzzle = {
+  id: "contra-experto-01",
+  category: "contradiccion",
+  title: "La edición matutina",
+  description: "Leyó en el diario algo que era imposible que estuviera publicado a esa hora.",
+  difficulty: "experto",
+  estimatedMinutes: 18,
+  story: "Ramiro Castex construyó una coartada basada en un desayuno tranquilo y la lectura del diario. Cada detalle suena razonable por separado. Pero hay tres datos que, combinados, revelan que algo en su relato fue fabricado.",
+  instructions: "Leé el relato de Ramiro con suma atención. La contradicción es indirecta: necesitás combinar al menos tres fragmentos para detectarla.",
+  hints: [
+    { level: 1, text: "Prestá atención al tipo de diario que describe, a la hora en que lo lee y a la noticia que menciona." },
+    { level: 2, text: "¿A qué hora se imprime y distribuye la edición matutina de un diario? ¿Puede incluir noticias que ocurrieron después de que salió a la calle?" },
+    { level: 3, text: 'Si la edición matutina se imprime de madrugada y llega antes de las 7:30, no puede contener noticias de algo que ocurrió a las 9:00 de esa misma mañana.' },
+  ],
+  solutionExplanation: 'Ramiro describe haber leído la edición matutina del diario a las 7:00, aclarando que esa edición se imprime de madrugada y llega antes de las 7:30. Sin embargo, la noticia que dice haber leído en ese diario —el derrumbe en la avenida— ocurrió ese mismo martes a las 9:00 de la mañana, dos horas después de que la edición ya estaba impresa y en circulación. Un diario impreso de madrugada no puede contener noticias de eventos ocurridos a las 9:00 am del mismo día.',
+  narrative: "",
+  sentences: [
+    { id: "s1", text: "El martes me levanté temprano, a eso de las 7:00, como cualquier día de semana.", isPartOfContradiction: false },
+    { id: "s2", text: "Preparé el desayuno y abrí el diario del martes que me dejan bajo la puerta.", isPartOfContradiction: false },
+    { id: "s3", text: "La edición matutina la imprimen de madrugada, así que siempre llega antes de las 7:30 sin falta.", isPartOfContradiction: true },
+    { id: "s4", text: "Mientras tomaba el café, leí una nota sobre un derrumbe en la avenida principal.", isPartOfContradiction: false },
+    { id: "s5", text: "Según la crónica del diario, el derrumbe había ocurrido esa mañana del martes, a las 9:00.", isPartOfContradiction: true },
+    { id: "s6", text: "Me llamó la atención porque ese edificio quedaba a dos cuadras de mi trabajo.", isPartOfContradiction: false },
+    { id: "s7", text: "Después de desayunar me duché, me vestí y salí de casa a las 8:30.", isPartOfContradiction: false },
+    { id: "s8", text: "Llegué a la oficina a las 9:15 y estuve reunido toda la mañana con el equipo.", isPartOfContradiction: false },
+    { id: "s9", text: "No me asomé a la calle hasta el mediodía, cuando salí a almorzar.", isPartOfContradiction: false },
+    { id: "s10", text: "Fue entonces cuando vi los escombros y los camiones. Recién ahí comprendí la magnitud del asunto.", isPartOfContradiction: false },
+    { id: "s11", text: "No tengo nada que ocultar. Si necesitan verificarlo, pueden pedir el registro de mis tarjetas o las cámaras del edificio.", isPartOfContradiction: false },
+  ],
+  contradictionIds: ["s3", "s5"],
+  contradictionExplanation: 'La edición matutina se imprime de madrugada y llega antes de las 7:30 (s3). Es imposible que contenga una noticia de algo que ocurrió a las 9:00 am del mismo día (s5).',
+};
+
+export const CONTRADICCION_PUZZLES: ContradictionPuzzle[] = [
+  c1,
+  c2,
+  c3,
+  c4,
+  c5,
+  c6,
+  c7,
+  c8,
+  c9,
+  c10,
+];
+
 export function getContradictionPuzzle(id: string) {
   return CONTRADICCION_PUZZLES.find((p) => p.id === id);
 }

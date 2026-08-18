@@ -234,7 +234,596 @@ const i3: InterrogatorioPuzzle = {
   ],
 };
 
-export const INTERROGATORIO_PUZZLES: InterrogatorioPuzzle[] = [i1, i2, i3];
+// ─── PUZZLE 4: facil-02 ──────────────────────────────────────────────────────
+
+const i4: InterrogatorioPuzzle = {
+  id: "interrogatorio-facil-02",
+  category: "interrogatorio",
+  title: "Noche en el hotel",
+  description: "El gerente del hotel amaneció muerto en su despacho. Tres empleados, 10 créditos. Las respuestas están ahí si sabés preguntar.",
+  difficulty: "facil",
+  estimatedMinutes: 9,
+  story: "El gerente Rolando fue hallado sin vida en su despacho del Hotel Éclat al amanecer. La puerta estaba cerrada por dentro, pero la llave maestra abre todas las puertas. Solo tres empleados tenían turno nocturno.",
+  instructions: "Tenés 10 créditos. Interrogá a los tres sospechosos y descubrí quién usó la llave maestra para entrar.",
+  hints: [
+    { level: 1, text: "Preguntá quién tenía acceso a la llave maestra esa noche." },
+    { level: 2, text: "La recepcionista afirma no haber abandonado el mostrador, pero hay un hueco en el registro de llamadas." },
+    { level: 3, text: "La recepcionista Valeria firmó la hoja de llave maestra a las 02:15 y nunca la devolvió al casillero antes del amanecer." },
+  ],
+  solutionExplanation: "Valeria firmó el retiro de la llave maestra a las 02:15, supuestamente para abrir una habitación de emergencia. Pero ningún huésped reportó una emergencia esa noche. El registro telefónico muestra un hueco de 20 minutos en el que nadie atendió el mostrador — tiempo suficiente para subir al despacho, confrontar al gerente y regresar.",
+  victim: { name: "Gerente Rolando", emoji: "🏨", role: "El gerente del hotel" },
+  totalCredits: 10,
+  killerId: "valeria",
+  suspects: [
+    {
+      id: "valeria",
+      name: "Valeria",
+      emoji: "🗝️",
+      role: "La recepcionista nocturna",
+      motive: "Rolando la había descubierto cobrando propinas ilegales y le iba a dar de baja esa semana",
+      isKiller: true,
+      questions: [
+        { id: "q1", text: "¿Estuviste en el mostrador toda la noche?", revealText: "\"Sí, en ningún momento me alejé. El mostrador necesita atención constante.\" — El registro de llamadas muestra un hueco de 20 minutos entre las 02:10 y las 02:30.", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Retiraste la llave maestra en algún momento?", revealText: "\"Sí, a las 02:15. Hubo una emergencia en el piso 4.\" — No existe ninguna solicitud registrada de esa habitación.", creditCost: 1, isKeyQuestion: true },
+        { id: "q3", text: "¿Cuándo devolviste la llave maestra al casillero?", revealText: "\"Al terminar el turno, a las 07:00.\" — El reglamento exige devolverla dentro de los 10 minutos. Cuatro horas y media después es muy tarde.", creditCost: 2, isKeyQuestion: true },
+        { id: "q4", text: "¿Sabías que Rolando iba a despedirte?", revealText: "\"No sé de qué hablás.\" — Se cruza de brazos. Su expediente muestra la notificación firmada por Rolando el día anterior.", creditCost: 2, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "cesar",
+      name: "César",
+      emoji: "🧹",
+      role: "El mozo de limpieza",
+      motive: "Conflicto por cambio de turno",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 02:00 y las 03:00?", revealText: "\"Limpiando el pasillo del piso 6. El carrito deja marcas en el registro de acceso al ascensor.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Viste algo inusual esa noche?", revealText: "\"Vi a Valeria alejarse del mostrador hacia el ascensor alrededor de las 02:15. Me pareció raro porque nunca lo hace.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Tenías conflictos con el gerente?", revealText: "\"Me cambió el turno sin avisarme. Le presenté una queja formal. Solo eso.\"", creditCost: 1, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "omar",
+      name: "Omar",
+      emoji: "🚪",
+      role: "El portero nocturno",
+      motive: "Desconocido",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Hubo algún ingreso o egreso inusual esa noche?", revealText: "\"Ningún huésped entró ni salió entre las 01:00 y las 06:00. Solo personal.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Viste a alguien subir al piso del gerente?", revealText: "\"No puedo ver el ascensor desde la entrada. Pero el registro de tarjetas lo muestra todo.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Sabés si la llave maestra fue usada esa noche?", revealText: "\"Solo Valeria la firmó. Y según el casillero, no la devolvió hasta las 07:00.\"", creditCost: 2, isKeyQuestion: false },
+      ],
+    },
+  ],
+};
+
+// ─── PUZZLE 5: facil-03 ──────────────────────────────────────────────────────
+
+const i5: InterrogatorioPuzzle = {
+  id: "interrogatorio-facil-03",
+  category: "interrogatorio",
+  title: "El jardín envenenado",
+  description: "El millonario apareció muerto entre sus rosas. Tres sospechosos, 10 créditos. Alguien sabía exactamente qué planta era tóxica.",
+  difficulty: "facil",
+  estimatedMinutes: 9,
+  story: "Don Aurelio, coleccionista de plantas exóticas, fue hallado muerto en su invernadero privado. El médico forense detectó extracto de acónito — la planta más venenosa del jardín. Solo tres personas frecuentaban el lugar.",
+  instructions: "Tenés 10 créditos. Interrogá a los sospechosos. El culpable conocía bien las plantas del jardín.",
+  hints: [
+    { level: 1, text: "Preguntá quién conocía las propiedades del acónito." },
+    { level: 2, text: "El jardinero niega saber de plantas venenosas, pero sus cuadernos dicen lo contrario." },
+    { level: 3, text: "Los cuadernos del jardinero Bautista tienen anotaciones detalladas sobre el acónito, incluyendo dosis letales." },
+  ],
+  solutionExplanation: "Bautista llevaba años cuidando el jardín de Don Aurelio y conocía perfectamente las propiedades del acónito. Sus cuadernos personales detallan concentraciones y efectos. Cuando Don Aurelio decidió vender la propiedad, Bautista iba a perder su hogar y trabajo de toda la vida. Añadió el extracto al té que le preparaba cada noche.",
+  victim: { name: "Don Aurelio", emoji: "🌿", role: "El coleccionista de plantas" },
+  totalCredits: 10,
+  killerId: "bautista",
+  suspects: [
+    {
+      id: "bautista",
+      name: "Bautista",
+      emoji: "🌱",
+      role: "El jardinero",
+      motive: "Don Aurelio iba a vender la propiedad; Bautista vivía en el predio y perdería su hogar",
+      isKiller: true,
+      questions: [
+        { id: "q1", text: "¿Conocés las plantas venenosas del jardín?", revealText: "\"Sé cuáles no hay que tocar, nada más. No soy botánico.\" — Sus cuadernos incluyen descripciones precisas de efectos letales del acónito.", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Dónde estabas anoche entre las 20:00 y las 22:00?", revealText: "\"En mi casilla, durmiendo. Empiezo temprano.\" — La casilla está a 50 metros del invernadero.", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Sabías que Don Aurelio iba a vender la propiedad?", revealText: "\"Me lo dijo la semana pasada. Cuarenta años aquí y me echa a la calle.\" — La voz se le quiebra de furia.", creditCost: 1, isKeyQuestion: false },
+        { id: "q4", text: "¿Qué hay en tus cuadernos de jardinería?", revealText: "\"Solo apuntes de riego y poda.\" — Un cuaderno abierto en su mesita tiene tres páginas sobre el acónito, con dosis y síntomas marcados en rojo.", creditCost: 2, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "patricia",
+      name: "Patricia",
+      emoji: "📋",
+      role: "La secretaria personal",
+      motive: "Don Aurelio le debía tres meses de sueldo",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas anoche entre las 20:00 y las 22:00?", revealText: "\"En mi casa. Tengo recibos del delivery que llegan a las 20:40. Aún están en la bolsa.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Conocés las plantas del invernadero?", revealText: "\"Lo evito. Soy alérgica al polen. Entro solo cuando es imprescindible.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Tenías conflictos con Don Aurelio?", revealText: "\"Me debía tres meses de sueldo. Pero lo estaba resolviendo legalmente, no así.\"", creditCost: 1, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "nicolas",
+      name: "Nicolás",
+      emoji: "🤝",
+      role: "El comprador interesado",
+      motive: "Don Aurelio cambió de parecer y retiró la venta",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas anoche?", revealText: "\"En el hotel Majestic. El portero me vio llegar a las 19:30 y salí a desayunar a las 08:00.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Sabías de las plantas venenosas del jardín?", revealText: "\"No. Me interesa el terreno, no las plantas. Ni siquiera sé qué es el acónito.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Don Aurelio retiró la oferta de venta?", revealText: "\"Sí, me llamó el martes. Dijo que lo había reconsiderado. Fue un golpe, pero no mato por un lote.\"", creditCost: 2, isKeyQuestion: false },
+      ],
+    },
+  ],
+};
+
+// ─── PUZZLE 6: medio-02 ──────────────────────────────────────────────────────
+
+const i6: InterrogatorioPuzzle = {
+  id: "interrogatorio-medio-02",
+  category: "interrogatorio",
+  title: "El tren de medianoche",
+  description: "Un pasajero muerto en el vagón dormitorio. Cuatro sospechosos, 12 créditos. El tren no paró en toda la noche.",
+  difficulty: "medio",
+  estimatedMinutes: 15,
+  story: "El empresario Félix Strand fue hallado muerto en su camarote del Expreso Norteño. El tren salió a las 22:00 y no hizo paradas hasta las 07:00. El asesino todavía está a bordo.",
+  instructions: "Tenés 12 créditos. Las preguntas clave cuestan 2. Distribuí bien tus créditos entre los cuatro sospechosos.",
+  hints: [
+    { level: 1, text: "Preguntá quién estaba en el vagón restaurante y quién no." },
+    { level: 2, text: "La pasajera del camarote contiguo asegura haber dormido toda la noche, pero el mozo la vio en el pasillo." },
+    { level: 3, text: "Ingrid fue vista en el pasillo frente al camarote de Strand a las 02:30. Su camarote comparte pared con el de la víctima y escuchó la conversación comprometedora." },
+  ],
+  solutionExplanation: "Ingrid viajaba en el camarote contiguo al de Strand. A través de la pared delgada escuchó que Strand hablaba por teléfono y revelaba información que la comprometía en un fraude. Ingrid no podía permitir que llegara a destino y declarara. Entró al camarote con el pretexto de un error de llave y lo envenenó con el somnífero disuelto en el vaso de agua de la mesita.",
+  victim: { name: "Félix Strand", emoji: "🚂", role: "El empresario viajero" },
+  totalCredits: 12,
+  killerId: "ingrid",
+  suspects: [
+    {
+      id: "ingrid",
+      name: "Ingrid",
+      emoji: "🪟",
+      role: "La pasajera del camarote contiguo",
+      motive: "Strand iba a declarar contra ella en un juicio por fraude financiero al llegar a destino",
+      isKiller: true,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 02:00 y las 03:00?", revealText: "\"Dormida en mi camarote toda la noche. No salí ni una vez.\" — El mozo Emilio la vio en el pasillo a las 02:30.", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Conocías a Félix Strand?", revealText: "\"De vista, nada más. Coincidimos en el andén.\" — Ambos figuran como partes en el mismo proceso judicial.", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Por qué el mozo te vio en el pasillo a las 02:30?", revealText: "\"El mozo se confundió. Hay muchos camarotes.\" — Emilio la describe con precisión: el chal verde y la trenza.", creditCost: 2, isKeyQuestion: true },
+        { id: "q4", text: "¿Sabías que Strand iba a declarar en el juicio?", revealText: "\"No tengo idea de qué juicio hablás.\" — Su abogado figura en los mismos autos que el de Strand.", creditCost: 2, isKeyQuestion: true },
+        { id: "q5", text: "¿Tenés somníferos en tu equipaje?", revealText: "\"Solo para dormir en el tren. Los tengo con receta.\" — El toxicólogo detectó exactamente ese compuesto en el cuerpo de Strand.", creditCost: 2, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "emilio",
+      name: "Emilio",
+      emoji: "🍽️",
+      role: "El mozo del vagón restaurante",
+      motive: "Strand lo había humillado públicamente en el restaurante",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 02:00 y las 03:00?", revealText: "\"Recogiendo los últimos platos del restaurante. Terminé a las 02:15 y fui al vagón de personal.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Viste algo inusual en el pasillo?", revealText: "\"A las 02:30 vi a la señora del chal verde — Ingrid — parada frente al camarote 7, el de Strand.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Tenías conflictos con Strand?", revealText: "\"Me insultó en la cena por un error con el pedido. Fue humillante. Pero no soy un asesino.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Podés confirmar la hora en que viste a Ingrid?", revealText: "\"Exactamente las 02:30. Mi reloj estaba en la bandeja. Lo recuerdo bien.\"", creditCost: 1, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "rodrigo",
+      name: "Rodrigo",
+      emoji: "🎲",
+      role: "El pasajero del camarote del frente",
+      motive: "Strand ganó una suma importante en la partida de cartas de la noche",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 02:00 y las 03:00?", revealText: "\"En mi camarote. Perdí bastante en las cartas y no estaba de humor para nada.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Cuánto perdiste en la partida?", revealText: "\"Doscientos mil. Strand era muy bueno. Pero ya lo había asumido.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Viste a alguien en el pasillo de madrugada?", revealText: "\"Escuché pasos frente a mi puerta alrededor de las 02:30. No salí a mirar.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q4", text: "¿Alguien puede confirmar que estabas en tu camarote?", revealText: "\"Hablé por teléfono con mi esposa a las 02:45. Podés verificarlo con el operador del tren.\"", creditCost: 2, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "felix_r",
+      name: "Revisor Dante",
+      emoji: "🎫",
+      role: "El revisor de a bordo",
+      motive: "Strand había presentado una queja formal contra él la semana anterior",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Hiciste tu ronda nocturna normalmente?", revealText: "\"Sí. A las 00:00 y a las 04:00. El camarote 7 estaba cerrado en ambas rondas.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Viste a alguien en el pasillo de madrugada?", revealText: "\"En la ronda de medianoche, todo tranquilo. A las 04:00 ya encontramos el cuerpo.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Tenías conflictos con Strand?", revealText: "\"Me puso una queja por haberle pedido el boleto dos veces. Yo hago mi trabajo.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Quién tenía acceso al camarote de Strand?", revealText: "\"Él, yo con la llave maestra, y cualquiera que tuviera una llave de camarote contiguo — a veces abren el compartimento equivocado.\"", creditCost: 2, isKeyQuestion: false },
+      ],
+    },
+  ],
+};
+
+// ─── PUZZLE 7: medio-03 ──────────────────────────────────────────────────────
+
+const i7: InterrogatorioPuzzle = {
+  id: "interrogatorio-medio-03",
+  category: "interrogatorio",
+  title: "Subasta en la galería",
+  description: "El dueño de la galería murió horas antes de una subasta millonaria. Cuatro sospechosos, 12 créditos. Alguien tenía mucho que perder si esa subasta llegaba a realizarse.",
+  difficulty: "medio",
+  estimatedMinutes: 15,
+  story: "El galerista Renato Voss fue hallado muerto en su despacho la noche previa a la subasta más importante de la temporada. Una obra clave iba a ser autenticada públicamente. Alguien no quería que eso ocurriera.",
+  instructions: "Tenés 12 créditos. Interrogá a los cuatro sospechosos. Las preguntas más reveladoras cuestan 2 créditos.",
+  hints: [
+    { level: 1, text: "Preguntá quién se beneficiaría de que la subasta no ocurriera." },
+    { level: 2, text: "El tasador Marcos tenía un secreto: había autenticado obras falsas anteriormente." },
+    { level: 3, text: "Marcos había firmado el certificado de autenticidad de una obra falsa que Renato iba a exponer. La subasta lo habría desenmascarado ante toda la industria." },
+  ],
+  solutionExplanation: "Marcos había autenticado meses atrás una obra que resultó ser falsa. Renato lo descubrió al preparar la subasta y planeaba revelarlo públicamente como parte de la presentación, incluyendo el certificado firmado por Marcos. Su carrera y libertad estaban en juego. Esa noche entró a la galería con el pretexto de una revisión de último momento y mató a Renato.",
+  victim: { name: "Renato Voss", emoji: "🖼️", role: "El galerista" },
+  totalCredits: 12,
+  killerId: "marcos",
+  suspects: [
+    {
+      id: "marcos",
+      name: "Marcos",
+      emoji: "🔍",
+      role: "El tasador independiente",
+      motive: "Renato iba a revelar públicamente que Marcos había autenticado una obra falsa",
+      isKiller: true,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 21:00 y las 23:00?", revealText: "\"En casa, preparando el informe para la subasta. Trabajé solo.\" — El sistema de acceso de la galería registra su tarjeta a las 21:45.", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Cuándo fue la última vez que estuviste en la galería?", revealText: "\"Esta tarde, a las 18:00. Revisé las obras con Renato.\" — Su tarjeta registra un segundo ingreso a las 21:45.", creditCost: 2, isKeyQuestion: true },
+        { id: "q3", text: "¿Autenticaste alguna obra que resultara ser falsa?", revealText: "\"Eso es imposible. Mi reputación es intachable.\" — Suda. Renato tenía en su escritorio el certificado firmado por Marcos con anotaciones en rojo.", creditCost: 2, isKeyQuestion: true },
+        { id: "q4", text: "¿Sabías qué iba a anunciar Renato en la subasta?", revealText: "\"Una colección importante. Nada más.\" — La asistente confirma que Renato ensayó una presentación especial sobre falsificaciones.", creditCost: 2, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "clara",
+      name: "Clara",
+      emoji: "📂",
+      role: "La curadora de la galería",
+      motive: "Disputa con Renato por la autoría curatorial de la exposición",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 21:00 y las 23:00?", revealText: "\"En casa de mi madre. Podés llamarla. Llegué a las 20:30 y me quedé a cenar.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Tenías conflictos con Renato?", revealText: "\"Me quitó el crédito curatorial en el catálogo. Fue injusto. Pero es mi trabajo, no mi vida.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Sabías de la obra falsa que autenticó Marcos?", revealText: "\"Renato me lo confió hace dos semanas. Estaba furioso. Dijo que lo iba a exponer en la subasta.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Alguien más sabía lo que Renato planeaba anunciar?", revealText: "\"Marcos lo sabía. Renato le envió una carta la semana pasada dándole la oportunidad de retirarse antes de la subasta.\"", creditCost: 2, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "hugo",
+      name: "Hugo",
+      emoji: "💰",
+      role: "El comprador principal",
+      motive: "Renato había rechazado su oferta de compra privada de la obra principal",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 21:00 y las 23:00?", revealText: "\"Cenando en el restaurante Bergamo. Tengo la reserva y el comprobante de pago con hora.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Por qué querías comprar la obra antes de la subasta?", revealText: "\"Porque en subasta sube el precio. Ofrecí justo, Renato se negó. Así funcionan los negocios.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Sabías que había una obra falsa en la exposición?", revealText: "\"No. Si lo hubiera sabido no habría hecho ninguna oferta.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Conocías a Marcos personalmente?", revealText: "\"De vista en el ambiente. Nunca trabajamos juntos.\"", creditCost: 1, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "sonia",
+      name: "Sonia",
+      emoji: "🗒️",
+      role: "La asistente de la galería",
+      motive: "Desconocido",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 21:00 y las 23:00?", revealText: "\"Me fui a las 19:30 como siempre. Renato estaba solo cuando salí.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Qué iba a anunciar Renato en la subasta?", revealText: "\"Ensayó una presentación sobre falsificaciones en el mercado. Me pidió que proyectara diapositivas. Una de ellas era el certificado de Marcos.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿El sistema de acceso registra todos los ingresos?", revealText: "\"Sí. Cada tarjeta queda registrada con hora exacta. Es el sistema nuevo que instaló Renato el mes pasado.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q4", text: "¿Marcos sabía que Renato tenía el certificado?", revealText: "\"Renato me dictó la carta que le envió a Marcos. Le decía exactamente qué iba a mostrar y cuándo.\"", creditCost: 2, isKeyQuestion: true },
+      ],
+    },
+  ],
+};
+
+// ─── PUZZLE 8: dificil-02 ────────────────────────────────────────────────────
+
+const i8: InterrogatorioPuzzle = {
+  id: "interrogatorio-dificil-02",
+  category: "interrogatorio",
+  title: "Alta mar",
+  description: "El capitán amaneció muerto en su camarote. Cinco tripulantes, 14 créditos. En alta mar no hay escapatoria, pero tampoco hay testigos imparciales.",
+  difficulty: "dificil",
+  estimatedMinutes: 22,
+  story: "El capitán Broderick fue hallado muerto en su camarote del carguero Tormenta Gris a 300 millas de la costa. El barco llevaba un cargamento sin declarar. Cinco tripulantes estaban a bordo esa noche.",
+  instructions: "Tenés 14 créditos. Las preguntas clave cuestan 2 o 3. Hay muchos con motivos — solo uno es el culpable.",
+  hints: [
+    { level: 1, text: "Preguntá quién sabía del cargamento sin declarar." },
+    { level: 2, text: "El primer oficial Aldric es el único que conocía la ruta real y la naturaleza del cargamento. Y el único que gana con la muerte del capitán." },
+    { level: 3, text: "Aldric tenía un acuerdo con los compradores del cargamento ilegal. El capitán descubrió el trato y amenazó con denunciarlo al llegar a puerto. Aldric no podía permitirlo." },
+  ],
+  solutionExplanation: "Aldric había negociado en secreto con los compradores del cargamento ilegal, cobrando una comisión personal sin que el capitán lo supiera. Cuando Broderick descubrió el desvío y amenazó con denunciarlo, Aldric lo mató esa noche en su camarote y reportó una muerte por causas naturales, sabiendo que en alta mar la investigación tardaría.",
+  victim: { name: "Capitán Broderick", emoji: "⚓", role: "El capitán del carguero" },
+  totalCredits: 14,
+  killerId: "aldric",
+  suspects: [
+    {
+      id: "aldric",
+      name: "Aldric",
+      emoji: "🧭",
+      role: "El primer oficial",
+      motive: "El capitán descubrió que Aldric cobraba comisiones del cargamento ilegal sin su conocimiento",
+      isKiller: true,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 02:00 y las 04:00?", revealText: "\"En el puente de mando. Cubrí el turno de navegación.\" — El registro automático muestra que el piloto automático estuvo activo sin supervisión humana desde las 02:30 hasta las 03:45.", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Cuándo viste al capitán por última vez?", revealText: "\"A las 22:00 en la cena. Parecía bien.\" — La cocinera lo oyó discutir con Aldric a las 01:30.", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Sabías que el cargamento no estaba declarado?", revealText: "\"El capitán manejaba la documentación. Yo me ocupo de la navegación.\" — Su firma aparece en los manifiestos alterados.", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Tenías algún acuerdo personal con los compradores del cargamento?", revealText: "\"No sé de qué hablás.\" — Hay transferencias bancarias a su cuenta desde una empresa vinculada a los compradores del mes pasado.", creditCost: 3, isKeyQuestion: true },
+        { id: "q5", text: "¿El capitán te confrontó sobre las comisiones?", revealText: "\"No. No había nada que confrontar.\" — La cocinera oyó al capitán decir 'te voy a hundir cuando lleguemos a puerto' durante la discusión de las 01:30.", creditCost: 3, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "cocinera",
+      name: "Vera",
+      emoji: "🍳",
+      role: "La cocinera del barco",
+      motive: "El capitán le retrasó el pago de dos meses de sueldo",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 02:00 y las 04:00?", revealText: "\"En la cocina preparando el pan del desayuno. El horno queda prendido toda la noche.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Escuchaste algo inusual esa noche?", revealText: "\"A la 01:30 escuché al capitán discutir con Aldric cerca de mi cocina. El capitán estaba furioso. Dijo algo de 'hundirte cuando lleguemos a puerto'.\"", creditCost: 2, isKeyQuestion: true },
+        { id: "q3", text: "¿Tenías conflictos con el capitán?", revealText: "\"Me debía dos meses. Pero es un barco, no podía irme. Lo iba a resolver en tierra.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q4", text: "¿Notaste algo raro en el comportamiento de Aldric?", revealText: "\"Esa noche estaba muy tranquilo para ser el segundo al mando con el capitán muerto. Demasiado tranquilo.\"", creditCost: 2, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "marinero",
+      name: "Bruno",
+      emoji: "⛵",
+      role: "El marinero de cubierta",
+      motive: "El capitán lo amenazó con no renovarle el contrato",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 02:00 y las 04:00?", revealText: "\"Dormido en mi camarote. Tuve turno de 18:00 a 02:00 y me fui directo a dormir.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Sabías del cargamento ilegal?", revealText: "\"Sospechaba algo raro cuando lo cargamos. Pero nadie me dijo nada y no pregunté.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿El capitán iba a no renovarte el contrato?", revealText: "\"Me lo dijo hace dos semanas. Pero consigo otro barco. No es el fin del mundo.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Viste a Aldric fuera del puente de mando esa noche?", revealText: "\"Lo vi bajar al corredor de camarotes alrededor de las 03:00. Me pareció raro porque supuestamente estaba de turno.\"", creditCost: 2, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "ingeniero",
+      name: "Kurt",
+      emoji: "⚙️",
+      role: "El jefe de máquinas",
+      motive: "Disputa técnica que el capitán resolvió en su contra",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 02:00 y las 04:00?", revealText: "\"En la sala de máquinas. Hubo una alarma de temperatura a las 02:15 que me tuvo ocupado hasta las 04:30.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Hay registro de esa alarma?", revealText: "\"Sí. El sistema automático la registra con hora, duración y la firma de quien la atendió.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Tenías conflictos con el capitán?", revealText: "\"Decidió no reemplazar un motor que yo pedí cambiar. Si algo hubiera fallado, la culpa era mía. Pero no llegó a eso.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Sabías del acuerdo de Aldric con los compradores?", revealText: "\"El mes pasado vi a Aldric firmar papeles que no eran del barco. No pregunté. No era mi asunto.\"", creditCost: 2, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "medico",
+      name: "Dra. Iris",
+      emoji: "⚕️",
+      role: "La médica de a bordo",
+      motive: "El capitán cuestionó su competencia frente a la tripulación",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 02:00 y las 04:00?", revealText: "\"En mi camarote. Bruno me llamó a las 04:30 cuando encontraron el cuerpo.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Cuál fue tu diagnóstico inicial?", revealText: "\"Asfixia. Pero en alta mar sin laboratorio no puedo ser conclusiva. La autopsia en tierra lo confirmará.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿El capitán tenía enemigos a bordo?", revealText: "\"Aldric y él discutían seguido en los últimos días. Más de lo normal.\"", creditCost: 2, isKeyQuestion: true },
+        { id: "q4", text: "¿Tenías conflictos con el capitán?", revealText: "\"Me criticó frente a todos por un diagnóstico. Fue humillante. Pero ya lo había superado.\"", creditCost: 1, isKeyQuestion: false },
+      ],
+    },
+  ],
+};
+
+// ─── PUZZLE 9: dificil-03 ────────────────────────────────────────────────────
+
+const i9: InterrogatorioPuzzle = {
+  id: "interrogatorio-dificil-03",
+  category: "interrogatorio",
+  title: "El laboratorio secreto",
+  description: "Un científico muerto horas antes de patentar su descubrimiento. Cinco sospechosos, 14 créditos. La verdad está en los datos.",
+  difficulty: "dificil",
+  estimatedMinutes: 23,
+  story: "El Dr. Wren fue hallado muerto en el laboratorio farmacéutico BioNex la noche anterior a la presentación de su patente revolucionaria. Cinco personas tenían acceso al laboratorio esa noche.",
+  instructions: "Tenés 14 créditos. Repartí bien tus preguntas. Las más reveladoras cuestan hasta 3 créditos.",
+  hints: [
+    { level: 1, text: "Preguntá quién se beneficia si la patente no se presenta." },
+    { level: 2, text: "La investigadora rival Lena había presentado casi la misma patente seis meses antes — y fue rechazada. El descubrimiento del Dr. Wren invalidaría su trabajo." },
+    { level: 3, text: "Lena accedió al laboratorio con la tarjeta de un colega a las 23:15, cuando todos creían que se había ido. Sus propios datos de investigación copian fragmentos del trabajo de Wren." },
+  ],
+  solutionExplanation: "Lena había trabajado en la misma línea de investigación que Wren, pero su patente fue rechazada por incompleta. Descubrió que Wren había llegado a la solución que ella nunca pudo alcanzar, y que además tenía evidencia de que ella había intentado copiar sus avances. Con la presentación al día siguiente, Lena enfrentaría el desprestigio total. Entró al laboratorio con la tarjeta del becario Teo — que le había prestado por error — y mató a Wren.",
+  victim: { name: "Dr. Wren", emoji: "🔬", role: "El científico investigador" },
+  totalCredits: 14,
+  killerId: "lena",
+  suspects: [
+    {
+      id: "lena",
+      name: "Dra. Lena",
+      emoji: "⚗️",
+      role: "La investigadora rival",
+      motive: "Wren iba a patentar el descubrimiento que ella no pudo lograr, y tenía pruebas de que ella había copiado sus datos",
+      isKiller: true,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 23:00 y las 01:00?", revealText: "\"En casa. Me fui del laboratorio a las 20:00.\" — El sistema de acceso registra la tarjeta de Teo — que ella usó — a las 23:15.", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Cuál era tu relación con el Dr. Wren?", revealText: "\"Colegas. Trabajamos en líneas separadas.\" — Sus bases de datos comparten fragmentos idénticos con los archivos de Wren.", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Tu patente rechazada tenía relación con la del Dr. Wren?", revealText: "\"Investigaciones similares existen en toda la industria.\" — Los revisores del comité señalaron que ambos trabajos compartían metodología central.", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Usaste la tarjeta del becario Teo para entrar al laboratorio?", revealText: "\"No. ¿Por qué usaría su tarjeta?\" — Teo confirma haberle prestado la tarjeta 'por error' esa tarde al irse.", creditCost: 3, isKeyQuestion: true },
+        { id: "q5", text: "¿El Dr. Wren tenía pruebas de que copiaste sus datos?", revealText: "\"Eso es una calumnia.\" — En el escritorio de Wren hay una carpeta rotulada 'Informe para Comité — conducta de Dra. Lena'.", creditCost: 3, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "director",
+      name: "Director Falk",
+      emoji: "🏢",
+      role: "El director de BioNex",
+      motive: "La patente de Wren obligaba a revelar financiamiento irregular del laboratorio",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 23:00 y las 01:00?", revealText: "\"En mi despacho hasta las 22:00 y luego en casa. Mi chofer puede confirmarlo.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿El financiamiento del laboratorio tiene irregularidades?", revealText: "\"Todo está auditado y en regla.\" — El auditor externo tiene señalamientos pendientes sin respuesta desde hace tres meses.", creditCost: 2, isKeyQuestion: false },
+        { id: "q3", text: "¿Querías que la patente no se presentara?", revealText: "\"Al contrario. La patente es un activo enorme para BioNex.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Sabías que Lena había copiado datos del Dr. Wren?", revealText: "\"Wren me lo reportó hace dos semanas. Iba a incluirlo en la presentación de mañana.\"", creditCost: 2, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "tecnico",
+      name: "Técnico Ramón",
+      emoji: "🧪",
+      role: "El técnico de laboratorio",
+      motive: "Wren lo había acusado de contaminar una muestra clave",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 23:00 y las 01:00?", revealText: "\"Terminé a las 22:30 y me fui. El registro de salida lo confirma.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Tenías conflictos con el Dr. Wren?", revealText: "\"Me culpó por una contaminación que no fue mi culpa. Pero le demostré que el error era del protocolo, no mío.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q3", text: "¿Notaste algo inusual en el comportamiento de la Dra. Lena?", revealText: "\"Estos últimos días estaba muy nerviosa. Dos veces la vi revisando archivos del servidor que no eran suyos.\"", creditCost: 2, isKeyQuestion: true },
+        { id: "q4", text: "¿Sabés algo de la tarjeta de acceso de Teo?", revealText: "\"Teo me dijo que le había prestado la tarjeta a alguien pero no recordaba a quién. Eso fue esa misma tarde.\"", creditCost: 2, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "teo",
+      name: "Becario Teo",
+      emoji: "📚",
+      role: "El becario de investigación",
+      motive: "Desconocido",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 23:00 y las 01:00?", revealText: "\"En casa de mi novia. Salí del laboratorio a las 18:00.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Le prestaste tu tarjeta de acceso a alguien?", revealText: "\"La Dra. Lena me la pidió para entrar un momento mientras yo recogía mis cosas. Pensé que la devolvería de inmediato.\"", creditCost: 1, isKeyQuestion: true },
+        { id: "q3", text: "¿Cuándo recuperaste tu tarjeta?", revealText: "\"No la recuperé. Pensé que la había dejado en mi bolso pero no estaba. Hoy me di cuenta.\"", creditCost: 2, isKeyQuestion: true },
+        { id: "q4", text: "¿Notaste algo raro en la Dra. Lena ese día?", revealText: "\"Estaba muy agitada. Me preguntó a qué hora pensaba irme y si el Dr. Wren iba a quedarse tarde.\"", creditCost: 2, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "auditora",
+      name: "Auditora Nadia",
+      emoji: "📊",
+      role: "La auditora externa",
+      motive: "Wren tenía documentos que complicarían su informe final",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 23:00 y las 01:00?", revealText: "\"En el hotel donde me hospedo. El servicio de habitaciones tiene el ticket de mi pedido a las 23:45.\"", creditCost: 1, isKeyQuestion: false },
+        { id: "q2", text: "¿Qué documentos del Dr. Wren te complicaban el informe?", revealText: "\"Contratos de investigación con fechas inconsistentes. Nada criminal, solo administrativo. Y se iba a resolver.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q3", text: "¿Conocías el conflicto entre Wren y la Dra. Lena?", revealText: "\"Wren me mencionó que iba a presentar evidencia de mala conducta de una colega en la misma presentación de la patente.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Revisaste el sistema de acceso del laboratorio?", revealText: "\"Como parte de la auditoría, sí. La tarjeta de Teo registra ingreso a las 23:15, pero Teo salió a las 18:00. Alguien más la usó.\"", creditCost: 2, isKeyQuestion: true },
+      ],
+    },
+  ],
+};
+
+// ─── PUZZLE 10: experto-01 ───────────────────────────────────────────────────
+
+const i10: InterrogatorioPuzzle = {
+  id: "interrogatorio-experto-01",
+  category: "interrogatorio",
+  title: "El último acto del club",
+  description: "El dueño del club nocturno más exclusivo de la ciudad apareció muerto en su oficina privada. Seis sospechosos, 16 créditos. Cada pregunta cuesta entre 2 y 4 créditos. No podés preguntarle a todos.",
+  difficulty: "experto",
+  estimatedMinutes: 30,
+  story: "Maximiliano Ore, dueño del Club Ónix, fue hallado muerto en su oficina blindada a las 03:00. La caja fuerte estaba abierta y vacía. Seis personas tenían acceso al sector privado esa noche. Solo tenés 16 créditos — usalos con precisión.",
+  instructions: "Cada pregunta cuesta 2, 3 o 4 créditos. No podés interrogar a todos en profundidad. Elegí con cuidado a quién le preguntás qué.",
+  hints: [
+    { level: 1, text: "Preguntá quién conocía la combinación de la caja fuerte además de Ore." },
+    { level: 2, text: "El contador Silvio era el único con acceso a la combinación y tenía una deuda enorme con Ore que esa noche venció." },
+    { level: 3, text: "Silvio llegó antes de las 22:00, entró a la oficina con el pretexto de entregar documentos, y los registros financieros muestran que transfirió el efectivo de la caja esa misma noche desde una cuenta vinculada a él." },
+  ],
+  solutionExplanation: "Silvio llevaba dos años desviando fondos del club y esta noche vencía el plazo que Ore le había dado para devolver el dinero — o lo denunciaba a la justicia. Silvio usó la combinación de la caja fuerte que manejaba como contador, entró con el pretexto de entregar el balance mensual, mató a Ore y tomó el efectivo de la caja para simular un robo. La transferencia desde su cuenta proxy esa misma noche lo delata.",
+  victim: { name: "Maximiliano Ore", emoji: "🌑", role: "El dueño del Club Ónix" },
+  totalCredits: 16,
+  killerId: "silvio",
+  suspects: [
+    {
+      id: "silvio",
+      name: "Silvio",
+      emoji: "🧾",
+      role: "El contador del club",
+      motive: "Ore lo había descubierto desviando fondos y le dio plazo hasta esa noche para devolver el dinero o ir preso",
+      isKiller: true,
+      questions: [
+        { id: "q1", text: "¿A qué hora llegaste al club esta noche?", revealText: "\"A las 23:00, a entregar el balance mensual.\" — El sistema de acceso lo registra a las 21:47, más de una hora antes.", creditCost: 2, isKeyQuestion: false },
+        { id: "q2", text: "¿Conocías la combinación de la caja fuerte?", revealText: "\"Ore nunca me la dijo. La caja es privada.\" — El contrato de administración que firmó hace dos años incluye 'acceso a caja fuerte para auditorías internas'.", creditCost: 2, isKeyQuestion: false },
+        { id: "q3", text: "¿Ore te había dado un plazo para devolver el dinero?", revealText: "\"No sé de qué dinero hablás. Mis cuentas están en regla.\" — El auditor externo detectó transferencias irregulares por un total de 800.000.", creditCost: 3, isKeyQuestion: true },
+        { id: "q4", text: "¿Realizaste alguna transferencia bancaria esta noche?", revealText: "\"Ninguna. No tengo por qué.\" — Una cuenta a nombre de una empresa vinculada a Silvio realizó una transferencia de 430.000 a las 02:15 — el monto exacto que faltaba en la caja.", creditCost: 4, isKeyQuestion: true },
+        { id: "q5", text: "¿Alguien te vio en la zona de la oficina privada?", revealText: "\"Fui directo al mostrador de la barra a entregar los papeles.\" — La cantante Vera lo vio en el pasillo del sector privado cerca de las 22:00.", creditCost: 3, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "vera",
+      name: "Vera",
+      emoji: "🎤",
+      role: "La cantante residente",
+      motive: "Ore no le renovó el contrato para la temporada siguiente",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 22:00 y las 03:00?", revealText: "\"En el escenario hasta las 01:30 y luego en el camerino. Hay cien personas que me vieron cantar.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q2", text: "¿Viste algo inusual esta noche?", revealText: "\"A las 22:00 vi a Silvio en el pasillo del sector privado. No debería estar ahí a esa hora.\"", creditCost: 2, isKeyQuestion: true },
+        { id: "q3", text: "¿Tenías conflictos con Ore?", revealText: "\"No me renovó el contrato. Estaba enojada, sí. Pero tengo cincuenta testigos de dónde estaba.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Sabías que Ore sospechaba de Silvio?", revealText: "\"Lo escuché decirle a la socia Kira hace una semana: 'le di a Silvio hasta el viernes o lo entrego'. Hoy era viernes.\"", creditCost: 3, isKeyQuestion: true },
+      ],
+    },
+    {
+      id: "dante",
+      name: "Dante",
+      emoji: "🍸",
+      role: "El barman principal",
+      motive: "Ore lo amenazó con despedirlo por servir tragos a un menor",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 22:00 y las 03:00?", revealText: "\"Detrás de la barra toda la noche. Hay cámaras apuntando directo. Podés verlas.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q2", text: "¿Notaste algo raro en Silvio esta noche?", revealText: "\"Llegó temprano y estaba muy agitado. Pidió agua — nunca pide agua — y miró varias veces hacia la oficina de Ore.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q3", text: "¿Sabías de la deuda de Silvio con Ore?", revealText: "\"Lo escuché de refilón. Algo de plata que Silvio le debía. No sé los detalles.\"", creditCost: 3, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "portero",
+      name: "Héctor",
+      emoji: "🚷",
+      role: "El jefe de seguridad",
+      motive: "Ore no le aumentó el sueldo pese a la promesa",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Revisaste el acceso al sector privado esta noche?", revealText: "\"Sí. Solo Ore y Silvio pasaron al sector privado después de las 21:00, según las tarjetas.\"", creditCost: 2, isKeyQuestion: true },
+        { id: "q2", text: "¿A qué hora llegó Silvio?", revealText: "\"A las 21:47. Me llamó la atención porque nunca viene tan temprano.\"", creditCost: 2, isKeyQuestion: true },
+        { id: "q3", text: "¿Tenías conflictos con Ore?", revealText: "\"Me prometió un aumento en enero. Febrero, marzo, abril... nada. Pero no me meto en cosas ilegales.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q4", text: "¿Hay cámaras en el pasillo del sector privado?", revealText: "\"Había. Ore me pidió desactivarlas hace tres semanas. No me dijo por qué.\"", creditCost: 3, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "kira",
+      name: "Kira",
+      emoji: "💎",
+      role: "La socia inversora",
+      motive: "Ore planeaba comprarle su parte del club a un precio muy por debajo del valor de mercado",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 22:00 y las 03:00?", revealText: "\"En el VIP hasta las 02:00 con clientes. Luego en mi auto de vuelta a casa. El chofer puede confirmar.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q2", text: "¿Ore te presionaba para vender tu parte del club?", revealText: "\"Sí. A un precio ridículo. Teníamos una disputa legal activa. Pero con él muerto el proceso se complica más, no menos.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q3", text: "¿Sabías que Ore iba a denunciar a Silvio esta noche?", revealText: "\"Ore me lo dijo hace una semana. Dijo que le había dado hasta el viernes. Y que si no aparecía el dinero, llamaba a la policía ese mismo viernes.\"", creditCost: 3, isKeyQuestion: true },
+        { id: "q4", text: "¿Silvio sabía que Ore ya te había contado?", revealText: "\"No lo sé. Pero si lo sabía, también sabía que yo era testigo. Tenía todo el motivo para actuar esa noche y no dejar loose ends.\"", creditCost: 3, isKeyQuestion: false },
+      ],
+    },
+    {
+      id: "dj",
+      name: "DJ Nomad",
+      emoji: "🎧",
+      role: "El DJ residente",
+      motive: "Ore exigía el 30% de sus contratos externos",
+      isKiller: false,
+      questions: [
+        { id: "q1", text: "¿Dónde estabas entre las 22:00 y las 03:00?", revealText: "\"En la cabina de DJ desde las 22:00 hasta las 02:30. Hay video completo.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q2", text: "¿Escuchaste o viste algo inusual desde tu posición?", revealText: "\"A las 22:00 vi a Silvio cruzar el piso hacia el fondo. Eso no es normal — esa zona es solo para Ore.\"", creditCost: 2, isKeyQuestion: false },
+        { id: "q3", text: "¿Tenías conflictos con Ore?", revealText: "\"Me sacaba el 30% de todo lo que ganaba afuera. Era abusivo pero legal. Pensaba no renovar el año que viene.\"", creditCost: 2, isKeyQuestion: false },
+      ],
+    },
+  ],
+};
+
+export const INTERROGATORIO_PUZZLES: InterrogatorioPuzzle[] = [
+  i1, i2, i3, i4, i5, i6, i7, i8, i9, i10,
+];
+
 export function getInterrogatorioPuzzle(id: string) {
   return INTERROGATORIO_PUZZLES.find((p) => p.id === id);
 }

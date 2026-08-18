@@ -144,7 +144,8 @@ const cf6: CifradoPuzzle = {
   instructions: "Reemplazá cada letra por su opuesta en el alfabeto: A↔Z, B↔Y, C↔X, D↔W... y así sucesivamente. Escribí el nombre completo del cómplice.",
   cipherName: "Cifrado Atbash",
   cipherDescription: "El Atbash invierte el alfabeto completo:\nA↔Z  B↔Y  C↔X  D↔W  E↔V  F↔U  G↔T  H↔S  I↔R  J↔Q  K↔P  L↔O  M↔N\n(y viceversa: N↔M, O↔L, P↔K, Q↔J, R↔I, S↔H, T↔G, U↔F, V↔E, W↔D, X↔C, Y↔B, Z↔A)",
-  encodedMessage: "WRMZIP ULFMGVH",
+  // Verificación Atbash: DIMARO→W(D),R(I),N(M),Z(A),I(R),L(O)=WRNZIL | FUENTES→U(F),F(U),V(E),M(N),G(T),V(E),H(S)=UFVMGVH ✓
+  encodedMessage: "WRNZIL UFVMGVH",
   decodingKey: {
     "A":"Z","B":"Y","C":"X","D":"W","E":"V","F":"U","G":"T","H":"S","I":"R","J":"Q","K":"P",
     "L":"O","M":"N","N":"M","O":"L","P":"K","Q":"J","R":"I","S":"H","T":"G","U":"F","V":"E",
@@ -154,10 +155,10 @@ const cf6: CifradoPuzzle = {
   answerDisplay: "DIMARO FUENTES",
   hints: [
     { level: 1, text: "El Atbash invierte el alfabeto: la primera letra (A) se convierte en la última (Z), la segunda (B) en la anteúltima (Y), etc." },
-    { level: 2, text: "W→D, R→I, M→N, Z→A, I→R... La primera palabra es un nombre." },
-    { level: 3, text: "WRMZIP = DIMARO  |  ULFMGVH = FUENTES." },
+    { level: 2, text: "W→D, R→I, N→M, Z→A, I→R, L→O... La primera palabra es un nombre de 6 letras." },
+    { level: 3, text: "WRNZIL = DIMARO  |  UFVMGVH = FUENTES." },
   ],
-  solutionExplanation: "Atbash: W→D, R→I, M→N, Z→A, R→I, P→K... WRMZIP = DIMARO. ULFMGVH = FUENTES. El cómplice era Dimaro Fuentes.",
+  solutionExplanation: "Atbash: W→D, R→I, N→M, Z→A, I→R, L→O = DIMARO. U→F, F→U, V→E, M→N, G→T, V→E, H→S = FUENTES. El cómplice era Dimaro Fuentes.",
 };
 
 // ─── PUZZLE 7 (nuevo): Rail Fence (vallas) — medio-03 ────────────────────────
